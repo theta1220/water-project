@@ -50,22 +50,38 @@ namespace App.Runtime.Player
         }
 
         // ====== 外部登録口 ======
+        /// <summary>
+        /// Predatorを登録します。
+        /// </summary>
+        /// <param name="p">登録するPredatorAgent</param>
         public void Register(PredatorAgent p)
         {
             if (p && !_predators.Contains(p)) _predators.Add(p);
         }
 
+        /// <summary>
+        /// Predatorを登録解除します。
+        /// </summary>
+        /// <param name="p">登録解除するPredatorAgent</param>
         public void Unregister(PredatorAgent p)
         {
             if (!p) return;
             _predators.Remove(p);
         }
 
+        /// <summary>
+        /// Preyを登録します。
+        /// </summary>
+        /// <param name="p">登録するPreyAgent</param>
         public void Register(PreyAgent p)
         {
             if (p && !_preys.Contains(p)) _preys.Add(p);
         }
 
+        /// <summary>
+        /// Preyを登録解除します。
+        /// </summary>
+        /// <param name="p">登録解除するPreyAgent</param>
         public void Unregister(PreyAgent p)
         {
             if (!p) return;

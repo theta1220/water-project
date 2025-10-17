@@ -62,6 +62,9 @@ namespace App.Runtime.Player
         }
 
         // === 主要API ===
+        /// <summary>
+        /// 現在の形態プリセットを即座に適用します。
+        /// </summary>
         public void ApplyVisualImmediate()
         {
             activePreset = PickPreset();
@@ -70,6 +73,9 @@ namespace App.Runtime.Player
             RebuildParts(activePreset, agent.genome);
         }
 
+        /// <summary>
+        /// 現在の形態プリセットに滑らかに移行します。
+        /// </summary>
         public void ApplyVisualSmooth()
         {
             var preset = PickPreset();

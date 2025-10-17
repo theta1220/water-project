@@ -69,21 +69,37 @@ namespace App.Runtime.Player
         }
 
         // ===== 登録口（Predator/Prey 側の OnEnable/OnDisable から呼ぶ） =====
+        /// <summary>
+        /// Predatorを登録します。
+        /// </summary>
+        /// <param name="a">登録するPredatorAgent</param>
         public void Register(PredatorAgent a)
         {
             if (a && !_predators.Contains(a)) _predators.Add(a);
         }
 
+        /// <summary>
+        /// Predatorを登録解除します。
+        /// </summary>
+        /// <param name="a">登録解除するPredatorAgent</param>
         public void Unregister(PredatorAgent a)
         {
             if (a) _predators.Remove(a);
         }
 
+        /// <summary>
+        /// Preyを登録します。
+        /// </summary>
+        /// <param name="a">登録するPreyAgent</param>
         public void Register(PreyAgent a)
         {
             if (a && !_preys.Contains(a)) _preys.Add(a);
         }
 
+        /// <summary>
+        /// Preyを登録解除します。
+        /// </summary>
+        /// <param name="a">登録解除するPreyAgent</param>
         public void Unregister(PreyAgent a)
         {
             if (a) _preys.Remove(a);

@@ -37,6 +37,13 @@ namespace App.Runtime.Player
 
         [Header("Next branches")] public PredatorMorphProfile[] nextMorphs; // 次に到達可能な候補
 
+        /// <summary>
+        /// この形態に進化可能かどうかをチェックします。
+        /// </summary>
+        /// <param name="g">現在のゲノム</param>
+        /// <param name="totalNutrition">総栄養</param>
+        /// <param name="currentParentId">現在の親の形態ID</param>
+        /// <returns>進化可能であればtrue</returns>
         public bool CheckEligible(Genome g, float totalNutrition, string currentParentId)
         {
             if (!string.IsNullOrEmpty(requiredParentMorphId) &&

@@ -104,6 +104,10 @@ namespace App.Runtime.Player
                 : (Vector2)transform.position + offset;
         }
 
+        /// <summary>
+        /// 個体の死亡を通知します。
+        /// </summary>
+        /// <param name="predator">死亡した個体がPredatorかどうか</param>
         public void NotifyDeath(bool predator)
         {
             if (predator) predatorCount = Mathf.Max(0, predatorCount - 1);
@@ -125,6 +129,11 @@ namespace App.Runtime.Player
         private LifeSpawner spawner;
         private bool isPredator;
 
+        /// <summary>
+        /// PopulationTrackerを初期化します。
+        /// </summary>
+        /// <param name="s">LifeSpawnerのインスタンス</param>
+        /// <param name="p">この個体がPredatorかどうか</param>
         public void Init(LifeSpawner s, bool p)
         {
             spawner = s;
