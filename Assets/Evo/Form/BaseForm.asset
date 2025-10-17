@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aae764535a246fba70e0edd5000dea8, type: 3}
+  m_Name: BaseForm
+  m_EditorClassIdentifier: 
+  morphId: base
+  displayName: Base Form
+  description: "\u307E\u3060\u9032\u5316\u306E\u521D\u671F\u6BB5\u968E\u306B\u3042\u308B\u5FAE\u751F\u7269\u3002\u3086\u308B\u3084\u304B\u306B\u6F02\u3044\u3001\u5C11\u3057\u305A\u3064\u6355\u98DF\u3092\u899A\u3048\u308B\u3002"
+  minTotalNutrition: 0
+  minSize: 0
+  minSpeed: 0
+  minSense: 0
+  minEmission: 0
+  maxViscosity: 999
+  requiredParentMorphId: 
+  addSize: 0
+  addEmission: 0
+  addHueShift: 0
+  bodyScaleMul: 1
+  overrideMaterial: {fileID: 0}
+  suctionMul: 1
+  accelMul: 1
+  biteDistanceAdd: 0
+  maxAttachmentsAdd: 0
+  nextMorphs:
+  - {fileID: 11400000, guid: d4a578a3f3c7ad34685f9d3e5857a3f0, type: 2}
+  - {fileID: 11400000, guid: 18d9ace8b85693d41850c66fa03299ef, type: 2}
+  - {fileID: 11400000, guid: e1bd2997d05b398409169a267e8d288d, type: 2}
