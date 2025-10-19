@@ -18,11 +18,25 @@ namespace App.Runtime.Player
         public float eatCooldown = 0.25f;
         [Range(0, 1)] public float preyWeight = 0.35f;
         [Range(0, 1)] public float mutationStrength = 0.3f;
+        public float speedBoostOnEat = 0.1f;
         public float bitePadding = 0.05f;
-        public float suctionForce = 6f;
+                public float suctionForce = 6f;
+        
+                [Header("Health")]
+                public float maxHealth = 100f;
+                [SerializeField] private float currentHealth;
+                public float healthDecayRate = 1f; // 1秒あたりの体力減少量
+                public float collisionDamage = 10f; // 衝突1回あたりのダメージ
+                public float healthRecoverOnEat = 20f; // 捕食1回あたりの回復量
+        
+                [Header("Movement")]
+                        public float accel = 20f;
 
-        [Header("Movement")] public float accel = 20f;
-        public float dragLinear = 2f;
+                        public float dragLinear = 2f;
+
+                        public float boostMultiplier = 1.5f;
+
+                        public float boostDecayMultiplier = 0.95f;
 
         [Header("AI Settings")] public bool aiControlled = true;
         public float wanderInterval = 1.4f;
@@ -97,6 +111,8 @@ namespace App.Runtime.Player
 
             SetupMouthSensor();
             SetupContactFilter();
+
+            currentHealth = maxHealth;
         }
 
         private void Start()
@@ -111,25 +127,37 @@ namespace App.Runtime.Player
             if (body) body.ApplyGenome(genome);
         }
 
+        private const float ROTATION_SMOOTH_SPEED = 10f;
+
         private void FixedUpdate()
         {
-            if (aiControlled) HandleAIInputFixed();
+            if (aiControlled) UpdateAI();
             else HandlePlayerInputFixed();
 
-            HuntFixed();
-            ApplyDampingFixed();
-            CarryAndDigestTick();
+            UpdateHunting();
+            ApplyDamping();
+            UpdateCarryAndDigest();
+            UpdateRotation();
             
-            genome.Decay(decayFactor);
+            // --- ゲノム減衰 --- 
+            bool isBoosting = !aiControlled && Input.GetButton("Jump"); // プレイヤー操作時のみJumpキーをチェック
+            var currentDecayFactor = isBoosting ? decayFactor * boostDecayMultiplier : decayFactor;
+            genome.Decay(currentDecayFactor);
 
-            // === 進行方向に回転 ===
+            // 移動による体力減少
+            var damage = rb.linearVelocity.magnitude * healthDecayRate * Time.fixedDeltaTime;
+            TakeDamage(damage);
+        }
+
+        private void UpdateRotation()
+        {
             if (rb.linearVelocity.sqrMagnitude > 0.001f)
             {
                 var angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.Lerp(
                     transform.rotation,
                     Quaternion.Euler(0f, 0f, angle - 90f), // -90° は「上方向」を前方にしたい場合
-                    10f * Time.fixedDeltaTime // 補間スピード（値を小さくすると滑らか）
+                    ROTATION_SMOOTH_SPEED * Time.fixedDeltaTime // 補間スピード（値を小さくすると滑らか）
                 );
             }
         }
@@ -139,10 +167,11 @@ namespace App.Runtime.Player
         {
             var h = Input.GetAxisRaw("Horizontal");
             var v = Input.GetAxisRaw("Vertical");
-            ApplyDrive(new Vector2(h, v).normalized, 1f);
+            var thrust = Input.GetButton("Jump") ? boostMultiplier : 1f;
+            ApplyDrive(new Vector2(h, v).normalized, thrust);
         }
 
-        private void HandleAIInputFixed()
+        private void UpdateAI()
         {
             var dir = Vector2.zero;
 
@@ -187,12 +216,12 @@ namespace App.Runtime.Player
 
         private void ApplyDrive(Vector2 dir, float thrustMul)
         {
-            var visc = Mathf.Max(0.1f, genome.viscosity);
-            var force = accel * genome.speed * thrustMul / visc;
+            dir = dir.normalized;
+            var force = accel * genome.speed * thrustMul;
             rb.AddForce(dir * force, ForceMode2D.Force);
         }
 
-        private void ApplyDampingFixed()
+        private void ApplyDamping()
         {
             var visc = Mathf.Max(0.1f, genome.viscosity);
             var k = Mathf.Clamp01(1f - Time.fixedDeltaTime * dragLinear * visc * 0.4f);
@@ -200,7 +229,7 @@ namespace App.Runtime.Player
         }
 
         // ===================== Hunting =====================
-        private void HuntFixed()
+        private void UpdateHunting()
         {
             var myR = GetApproxRadius(selfCol);
             var biteR = genome.biteDistance + myR + bitePadding;
@@ -246,10 +275,12 @@ namespace App.Runtime.Player
             if (captureMode == CaptureMode.InstantEat)
             {
                 var preyGene = prey.GetGenomeForConsumption();
-                var nutrition = prey.GetNutritionValue();
                 genome.Absorb(preyGene, preyWeight, mutationStrength);
+                var nutrition = prey.GetNutritionValue();
                 genome.size = Mathf.Clamp(genome.size + nutrition * digestNutritionScale, 0.2f, 3);
                 genome.emission = Mathf.Clamp01(genome.emission + nutrition * digestEmissionScale);
+                genome.BoostSpeed(nutrition, speedBoostOnEat);
+                currentHealth = Mathf.Min(maxHealth, currentHealth + healthRecoverOnEat);
                 ApplyPhenotype();
                 morphCtl?.NotifyAbsorb(nutrition, preyGene);
                 prey.OnEaten();
@@ -275,7 +306,7 @@ namespace App.Runtime.Player
             });
         }
 
-        private void CarryAndDigestTick()
+        private void UpdateCarryAndDigest()
         {
             if (_carries.Count == 0) return;
 
@@ -315,6 +346,8 @@ namespace App.Runtime.Player
                     var partNut = c.nutrition * delta;
                     genome.size = Mathf.Clamp(genome.size + partNut * digestNutritionScale, 0.2f, 3);
                     genome.emission = Mathf.Clamp01(genome.emission + partNut * digestEmissionScale);
+                    genome.BoostSpeed(partNut, speedBoostOnEat);
+                    currentHealth = Mathf.Min(maxHealth, currentHealth + healthRecoverOnEat * delta);
                     ApplyPhenotype();
                     morphCtl?.NotifyAbsorb(partNut, c.snapshot);
                 }
@@ -329,7 +362,7 @@ namespace App.Runtime.Player
 
         // ===================== 外部ターゲットAPI =====================
         /// <summary>
-        /// 外部システムからターゲットを受け取る
+        /// 外部システム（例：グリッドマネージャ）からターゲットを受け取ります。
         /// </summary>
         /// <param name="prey">ターゲットとなるPreyAgent</param>
         public void ReceiveExternalTarget(PreyAgent prey)
@@ -393,6 +426,39 @@ namespace App.Runtime.Player
                 return cc.radius * Mathf.Abs(cc.transform.lossyScale.x);
             var b = col.bounds;
             return Mathf.Max(b.extents.x, b.extents.y);
+        }
+
+        /// <summary>
+        /// ダメージを受け、体力を減少させます。体力が0以下になると消滅します。
+        /// </summary>
+        /// <param name="damage">受けるダメージ量。</param>
+        public void TakeDamage(float damage)
+        {
+            currentHealth -= damage;
+            if (currentHealth <= 0)
+            {
+                // 死亡処理
+                if (LifeSpawner.Instance != null) LifeSpawner.Instance.NotifyDeath(true); // Predatorなのでtrue
+                else Debug.LogWarning("LifeSpawner.Instance is null. Cannot notify death.");
+                Destroy(gameObject);
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (other.gameObject.TryGetComponent<PredatorAgent>(out var otherPredator))
+            {
+                // 自分自身との衝突は無視
+                if (otherPredator == this) return;
+
+                // ダメージを与える
+                TakeDamage(collisionDamage);
+            }
+        }
+        
+        public float GetHealthNormalized()
+        {
+            return currentHealth / maxHealth;
         }
 
 #if UNITY_EDITOR

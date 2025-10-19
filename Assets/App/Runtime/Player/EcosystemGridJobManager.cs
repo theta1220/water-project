@@ -70,36 +70,36 @@ namespace App.Runtime.Player
 
         // ===== 登録口（Predator/Prey 側の OnEnable/OnDisable から呼ぶ） =====
         /// <summary>
-        /// Predatorを登録します。
+        /// Predatorをシステムに登録します。
         /// </summary>
-        /// <param name="a">登録するPredatorAgent</param>
+        /// <param name="a">登録するPredatorAgent。</param>
         public void Register(PredatorAgent a)
         {
             if (a && !_predators.Contains(a)) _predators.Add(a);
         }
 
         /// <summary>
-        /// Predatorを登録解除します。
+        /// Predatorをシステムから登録解除します。
         /// </summary>
-        /// <param name="a">登録解除するPredatorAgent</param>
+        /// <param name="a">登録解除するPredatorAgent。</param>
         public void Unregister(PredatorAgent a)
         {
             if (a) _predators.Remove(a);
         }
 
         /// <summary>
-        /// Preyを登録します。
+        /// Preyをシステムに登録します。
         /// </summary>
-        /// <param name="a">登録するPreyAgent</param>
+        /// <param name="a">登録するPreyAgent。</param>
         public void Register(PreyAgent a)
         {
             if (a && !_preys.Contains(a)) _preys.Add(a);
         }
 
         /// <summary>
-        /// Preyを登録解除します。
+        /// Preyをシステムから登録解除します。
         /// </summary>
-        /// <param name="a">登録解除するPreyAgent</param>
+        /// <param name="a">登録解除するPreyAgent。</param>
         public void Unregister(PreyAgent a)
         {
             if (a) _preys.Remove(a);
@@ -114,10 +114,19 @@ namespace App.Runtime.Player
             var predCount = _predators.Count;
             var preyCount = _preys.Count;
 
-            // ネイティブ配列を確保
             AllocateFrameBuffers(predCount, preyCount);
+            CopyAgentData(predCount, preyCount);
+            RebuildGrid(preyCount);
 
-            // 位置と索敵半径をコピー（メインスレッド）
+            var jobHandle = ScheduleAndRunJobs(predCount, preyCount);
+            jobHandle.Complete();
+
+            DistributeResults(predCount, preyCount);
+            DisposeFrameBuffers();
+        }
+
+        private void CopyAgentData(int predCount, int preyCount)
+        {
             for (var i = 0; i < predCount; i++)
             {
                 var p = _predators[i];
@@ -131,8 +140,10 @@ namespace App.Runtime.Player
                 var q = _preys[j];
                 _preyPos[j] = q ? new float2(q.transform.position.x, q.transform.position.y) : new float2(1e9f, 1e9f);
             }
+        }
 
-            // グリッド（MultiHashMap）再構築
+        private void RebuildGrid(int preyCount)
+        {
             if (!_gridAllocated)
             {
                 _grid = new NativeParallelMultiHashMap<long, int>(math.max(initialGridCapacity, preyCount * 2),
@@ -142,11 +153,12 @@ namespace App.Runtime.Player
             else
             {
                 if (_grid.IsCreated) _grid.Clear();
-                // 容量が足りなそうなら増やす
                 if (_grid.Capacity < preyCount * 2) _grid.Capacity = preyCount * 2;
             }
+        }
 
-            // Job 1: Prey をセルへ登録
+        private JobHandle ScheduleAndRunJobs(int predCount, int preyCount)
+        {
             var build = new BuildGridJob
             {
                 preyPositions = _preyPos,
@@ -155,7 +167,6 @@ namespace App.Runtime.Player
             };
             var h1 = build.Schedule(preyCount, 64);
 
-            // Job 2: Predator 毎に近傍セル検索（Job1 完了後）
             var find = new NearestJob
             {
                 predatorPositions = _predPos,
@@ -165,20 +176,23 @@ namespace App.Runtime.Player
                 grid = _grid,
                 outNearest = _nearest
             };
-            var h2 = find.Schedule(predCount, 64, h1);
-            h2.Complete(); // 結果受け取り
+            return find.Schedule(predCount, 64, h1);
+        }
 
-            // 結果を各 Predator へ配布（メインスレッド）
+        private void DistributeResults(int predCount, int preyCount)
+        {
             for (var i = 0; i < predCount; i++)
             {
                 var pred = _predators[i];
                 if (!pred) continue;
                 var idx = _nearest[i];
                 var target = (idx >= 0 && idx < preyCount) ? _preys[idx] : null;
-                pred.ReceiveExternalTarget(target); // ◀ 既存の受け口
+                pred.ReceiveExternalTarget(target);
             }
+        }
 
-            // TempJob メモリはここで破棄（次フレームに再確保）
+        private void DisposeFrameBuffers()
+        {
             if (_grid.IsCreated)
             {
                 _grid.Dispose();

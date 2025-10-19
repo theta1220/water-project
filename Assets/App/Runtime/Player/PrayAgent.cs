@@ -64,25 +64,41 @@ namespace App.Runtime.Player
             if (EcosystemGridJobManager.Instance) EcosystemGridJobManager.Instance.Unregister(this);
         }
 
+        private const float WANDER_INTERVAL_MIN_FACTOR = 0.6f;
+        private const float WANDER_INTERVAL_MAX_FACTOR = 1.4f;
+        private const float MIN_VISCOSITY = 0.5f;
+        private const float MIN_MAX_SPEED = 0.2f;
+
         private void Update()
         {
-            // 徘徊方向更新
+            UpdateWander();
+            ClampVelocity();
+            ApplyBoundsPush();
+            UpdateVisuals();
+        }
+
+        private void UpdateWander()
+        {
             timer -= Time.deltaTime;
             if (timer <= 0f)
             {
-                timer = wanderInterval * Random.Range(0.6f, 1.4f);
+                timer = wanderInterval * Random.Range(WANDER_INTERVAL_MIN_FACTOR, WANDER_INTERVAL_MAX_FACTOR);
                 var dir = Random.insideUnitCircle.normalized;
-                var visc = Mathf.Max(0.5f, genome.viscosity);
+                var visc = Mathf.Max(MIN_VISCOSITY, genome.viscosity);
                 var force = wanderForce * genome.speed / visc;
                 rb.AddForce(dir * force, ForceMode2D.Force);
             }
+        }
 
-            // 速度制限
-            var maxV = Mathf.Max(0.2f, maxSpeed);
+        private void ClampVelocity()
+        {
+            var maxV = Mathf.Max(MIN_MAX_SPEED, maxSpeed);
             if (rb.linearVelocity.sqrMagnitude > maxV * maxV)
                 rb.linearVelocity = rb.linearVelocity.normalized * maxV;
+        }
 
-            // 軽い境界戻し（任意）
+        private void ApplyBoundsPush()
+        {
             if (boundsSoftPush > 0f)
             {
                 var min = boundsCenter - boundsSize * 0.5f;
@@ -95,17 +111,21 @@ namespace App.Runtime.Player
                 if (p.y > max.y) push.y -= 1f;
                 if (push != Vector2.zero)
                 {
-                    var visc = Mathf.Max(0.5f, genome.viscosity);
+                    var visc = Mathf.Max(MIN_VISCOSITY, genome.viscosity);
                     rb.AddForce(push.normalized * (boundsSoftPush / visc), ForceMode2D.Force);
                 }
             }
+        }
 
-            // 見た目追随
+        private void UpdateVisuals()
+        {
             if (body) body.ApplyGenome(genome);
         }
 
         // ==== 捕食フック ====
-        /// <summary>非Joint方式で捕獲されたとき、物理を止めて運搬しやすくする。</summary>
+        /// <summary>
+        /// Jointを使用しない方法で捕獲された際に呼び出され、物理的な挙動を停止させて運搬を容易にします。
+        /// </summary>
         public void OnCapturedNonJoint()
         {
             if (debugLogs) Debug.Log($"[Prey] Captured (Non-Joint): {name}");
@@ -122,7 +142,9 @@ namespace App.Runtime.Player
             col.enabled = false;
         }
 
-        /// <summary>（必要なら）運搬を中断して解放したいときに呼ぶ</summary>
+        /// <summary>
+        /// 運搬を中断して解放する必要がある場合に呼び出します。
+        /// </summary>
         public void OnReleasedNonJoint()
         {
             if (!rb || !col) return;
@@ -130,7 +152,9 @@ namespace App.Runtime.Player
             col.enabled = wasColliderEnabled;
         }
 
-        /// <summary>完全に食べられたときの処理</summary>
+        /// <summary>
+        /// 完全に捕食された際の処理を実行します。
+        /// </summary>
         public void OnEaten()
         {
             if (debugLogs) Debug.Log($"[Prey] Eaten: {name}");
@@ -139,14 +163,14 @@ namespace App.Runtime.Player
 
         // ==== PredatorAgent から参照されるAPI ====
         /// <summary>
-        /// 捕食されるときにゲノムのクローンを渡す
+        /// 捕食される際に、ゲノムのクローンを提供します。
         /// </summary>
-        /// <returns>ゲノムのクローン</returns>
+        /// <returns>ゲノムのクローン。</returns>
         public Genome GetGenomeForConsumption() => genome.Clone();
         /// <summary>
-        /// 栄養価を返す
+        /// 栄養価を返します。
         /// </summary>
-        /// <returns>栄養価</returns>
+        /// <returns>栄養価。</returns>
         public float GetNutritionValue() => nutrition;
 
         // ==== 見た目・物理反映 ====

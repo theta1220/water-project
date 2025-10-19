@@ -4,7 +4,10 @@ namespace App.Runtime.Player
 {
     public class LifeSpawner : MonoBehaviour
     {
+        public static LifeSpawner Instance { get; private set; }
+
         [Header("Spawn Prefabs")] public GameObject preyPrefab;
+
         public GameObject predatorPrefab;
 
         [Header("Spawn counts")] public int initialPrey = 50;
@@ -34,6 +37,17 @@ namespace App.Runtime.Player
         private int preyCount;
         private int predatorCount;
 
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        
         private void Start()
         {
             for (var i = 0; i < initialPrey; i++) SpawnPrey();
@@ -46,12 +60,26 @@ namespace App.Runtime.Player
             timer -= Time.deltaTime;
             if (timer <= 0f)
             {
+                TrySpawn();
                 timer = spawnInterval;
-                if (preyCount < maxPrey) SpawnPrey();
-                if (predatorCount < maxPredator) SpawnPredator();
             }
         }
 
+        private void TrySpawn()
+        {
+            if (preyCount < maxPrey)
+            {
+                SpawnPrey();
+            }
+            if (predatorCount < maxPredator)
+            {
+                SpawnPredator();
+            }
+        }
+
+        /// <summary>
+        /// 新しいPreyをスポーンします。
+        /// </summary>
         private void SpawnPrey()
         {
             if (!preyPrefab) return;
@@ -62,17 +90,16 @@ namespace App.Runtime.Player
             var prey = go.GetComponent<PreyAgent>();
             if (prey)
             {
-                prey.genome.speed = Random.Range(preySpeedRange.x, preySpeedRange.y);
-                prey.genome.viscosity = Random.Range(preyViscosityRange.x, preyViscosityRange.y);
-                prey.genome.size = Random.Range(preySizeRange.x, preySizeRange.y);
-                prey.genome.hue = Random.Range(preyHueRange.x, preyHueRange.y);
-                prey.genome.emission = Random.Range(preyEmissionRange.x, preyEmissionRange.y);
+                InitializeGenome(prey.genome, preySpeedRange, preyViscosityRange, preySizeRange, preyHueRange, preyEmissionRange);
                 prey.nutrition = Random.Range(0.5f, 2.0f);
             }
 
             go.AddComponent<PopulationTracker>().Init(this, false);
         }
 
+        /// <summary>
+        /// 新しいPredatorをスポーンします。
+        /// </summary>
         private void SpawnPredator()
         {
             if (!predatorPrefab) return;
@@ -83,16 +110,20 @@ namespace App.Runtime.Player
             var pred = go.GetComponent<PredatorAgent>();
             if (pred)
             {
-                pred.genome.speed = Random.Range(predSpeedRange.x, predSpeedRange.y);
-                pred.genome.viscosity = Random.Range(predViscosityRange.x, predViscosityRange.y);
-                pred.genome.size = Random.Range(predSizeRange.x, predSizeRange.y);
-                pred.genome.hue = Random.Range(predHueRange.x, predHueRange.y);
-                pred.genome.emission = Random.Range(predEmissionRange.x, predEmissionRange.y);
-
+                InitializeGenome(pred.genome, predSpeedRange, predViscosityRange, predSizeRange, predHueRange, predEmissionRange);
                 if (pred.preyMask == 0) pred.preyMask = LayerMask.GetMask("Prey");
             }
 
             go.AddComponent<PopulationTracker>().Init(this, true);
+        }
+
+        private void InitializeGenome(Genome genome, Vector2 speedRange, Vector2 viscosityRange, Vector2 sizeRange, Vector2 hueRange, Vector2 emissionRange)
+        {
+            genome.speed = Random.Range(speedRange.x, speedRange.y);
+            genome.viscosity = Random.Range(viscosityRange.x, viscosityRange.y);
+            genome.size = Random.Range(sizeRange.x, sizeRange.y);
+            genome.hue = Random.Range(hueRange.x, hueRange.y);
+            genome.emission = Random.Range(emissionRange.x, emissionRange.y);
         }
 
         private Vector2 RandomPosition()
@@ -130,10 +161,10 @@ namespace App.Runtime.Player
         private bool isPredator;
 
         /// <summary>
-        /// PopulationTrackerを初期化します。
+        /// PopulationTrackerを初期化し、スポナーと個体の種類を設定します。
         /// </summary>
-        /// <param name="s">LifeSpawnerのインスタンス</param>
-        /// <param name="p">この個体がPredatorかどうか</param>
+        /// <param name="s">LifeSpawnerのインスタンス。</param>
+        /// <param name="p">この個体がPredatorであるかどうか。</param>
         public void Init(LifeSpawner s, bool p)
         {
             spawner = s;

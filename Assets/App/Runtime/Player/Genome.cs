@@ -9,10 +9,12 @@ namespace App.Runtime.Player
     {
         [Header("Core stats")] [Range(0.1f, 3f)]
         public float speed = 1.0f;
+        public float maxSpeed = 1.0f;
+        public float minSpeed = 0.3f;
 
         [Range(0.1f, 3f)] public float viscosity = 1.0f;
         [Range(0.2f, 3f)] public float size = 1.0f;
-        [Range(0.5f, 10f)] public float senseRange = 4.0f;
+        [Range(0.5f, 100f)] public float senseRange = 4.0f;
         [Range(0.05f, 2f)] public float biteDistance = 0.45f;
         [Range(0.0f, 1f)] public float metabolism = 0.4f;
 
@@ -20,17 +22,15 @@ namespace App.Runtime.Player
         [Range(0f, 2f)] public float emission = 0.2f;
 
         /// <summary>
-        /// 捕食者のゲノムを吸収し、突然変異を適用します。
+        /// 別のゲノムを吸収し、突然変異を適用して現在のゲノムを更新します。
         /// </summary>
-        /// <param name="prey">捕食されるゲノム</param>
-        /// <param name="preyWeight">捕食者のゲノムの重み</param>
-        /// <param name="mutationStrength">突然変異の強さ</param>
+        /// <param name="prey">吸収されるゲノム。</param>
+        /// <param name="preyWeight">吸収されるゲノムの重み。</param>
+        /// <param name="mutationStrength">突然変異の強さ。</param>
         public void Absorb(Genome prey, float preyWeight, float mutationStrength)
         {
             var selfWeight = Mathf.Max(0f, 1f - preyWeight);
-            speed = Mutate(LerpClamp(speed, prey.speed, selfWeight, preyWeight), 0.10f, mutationStrength);
             viscosity = Mutate(LerpClamp(viscosity, prey.viscosity, selfWeight, preyWeight), 0.10f, mutationStrength);
-            size = Mutate(LerpClamp(size, prey.size, selfWeight, preyWeight), 0.20f, mutationStrength);
             senseRange = Mutate(LerpClamp(senseRange, prey.senseRange, selfWeight, preyWeight), 0.50f,
                 mutationStrength);
             biteDistance = Mutate(LerpClamp(biteDistance, prey.biteDistance, selfWeight, preyWeight), 0.05f,
@@ -43,12 +43,12 @@ namespace App.Runtime.Player
         }
         
         /// <summary>
-        /// ゲノムの値を時間とともに減衰させます。
+        /// 時間の経過とともにゲノムの値を減衰させます。
         /// </summary>
-        /// <param name="decayFactor">減衰係数</param>
+        /// <param name="decayFactor">減衰係数。</param>
         public void Decay(float decayFactor)
         {
-            speed = Mathf.Max(0.1f, speed * decayFactor);
+            speed = Mathf.Clamp(minSpeed, maxSpeed, speed * decayFactor);
             viscosity = Mathf.Max(0.1f, viscosity * decayFactor);
             size = Mathf.Max(0.2f, size * decayFactor);
             senseRange = Mathf.Max(0.5f, senseRange * decayFactor);
@@ -56,6 +56,17 @@ namespace App.Runtime.Player
             metabolism = Mathf.Clamp01(metabolism * decayFactor);
 
             emission = Mathf.Max(0f, emission * decayFactor);
+        }
+
+        /// <summary>
+        /// 栄養価に基づいてスピードを増加させます。
+        /// </summary>
+        /// <param name="nutrition">獲得した栄養価。</param>
+        /// <param name="boostFactor">スピードの増加係数。</param>
+        public void BoostSpeed(float nutrition, float boostFactor)
+        {
+            if (nutrition <= 0f || boostFactor <= 0f) return;
+            speed += nutrition * boostFactor;
         }
 
         private static float LerpClamp(float a, float b, float wa, float wb)
@@ -81,9 +92,9 @@ namespace App.Runtime.Player
         }
 
         /// <summary>
-        /// ゲノムのクローンを作成します。
+        /// 現在のゲノムのクローンを作成します。
         /// </summary>
-        /// <returns>ゲノムの新しいインスタンス</returns>
+        /// <returns>ゲノムの新しいインスタンス。</returns>
         public Genome Clone() => (Genome)MemberwiseClone();
     }
 }

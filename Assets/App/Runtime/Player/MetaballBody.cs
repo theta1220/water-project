@@ -12,14 +12,11 @@ namespace App.Runtime.Player
         public float baseScale = 0.8f;
 
         /// <summary>
-        /// ゲノム情報を適用して見た目を更新します。
+        /// 指定されたゲノム情報に基づいて、メタボールの見た目を更新します。
         /// </summary>
-        /// <param name="g">適用するゲノム</param>
+        /// <param name="g">適用するゲノム。</param>
         public void ApplyGenome(Genome g)
         {
-            var s = Mathf.Max(0.1f, baseScale * g.size);
-            transform.localScale = Vector3.one * s;
-
             if (targetRenderer && targetRenderer.material)
             {
                 var mat = targetRenderer.material;

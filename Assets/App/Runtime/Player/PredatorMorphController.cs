@@ -57,10 +57,10 @@ namespace App.Runtime.Player
         // ====== 外部API（PredatorAgent から呼ぶ） ======
 
         /// <summary>
-        /// 捕食で栄養を得たときに呼ぶ（PredatorAgentの消化処理から）。
-        /// nutritionGained: 今回増加した栄養（部分吸収のΔ）
-        /// preySnapshot: 吸収前のPreyのGenome（進化条件に使いたい場合の拡張用）
+        /// 捕食によって栄養が得られた際に呼び出されます。これにより、進化の条件が評価されます。
         /// </summary>
+        /// <param name="nutritionGained">今回増加した栄養量。</param>
+        /// <param name="preySnapshot">吸収前のPreyのゲノムのスナップショット。</param>
         public void NotifyAbsorb(float nutritionGained, Genome preySnapshot)
         {
             _totalNutritionAbsorbed += Mathf.Max(0f, nutritionGained);
@@ -76,7 +76,10 @@ namespace App.Runtime.Player
             } while (allowMultipleStepsPerFrame && advanced && guard < 8);
         }
 
-        /// <summary>デバッグ：明示的にID指定で変形</summary>
+        /// <summary>
+        /// デバッグ用：指定されたIDの形態に強制的に変形させます。
+        /// </summary>
+        /// <param name="id">変形先の形態ID。</param>
         public void ForceMorphById(string id)
         {
             var m = FindMorphById(id);
@@ -84,7 +87,11 @@ namespace App.Runtime.Player
             else Debug.LogWarning($"[Morph] MorphId '{id}' が見つかりません。");
         }
 
-        /// <summary>デバッグ：栄養を足して即進化判定</summary>
+        /// <summary>
+        /// デバッグ用：栄養を追加し、即座に進化の判定を行います。
+        /// </summary>
+        /// <param name="amount">追加する栄養量。</param>
+        /// <param name="evaluate">進化の判定を行うかどうか。</param>
         public void AddNutrition(float amount, bool evaluate = true)
         {
             _totalNutritionAbsorbed = Mathf.Max(0f, _totalNutritionAbsorbed + amount);

@@ -63,7 +63,7 @@ namespace App.Runtime.Player
 
         // === 主要API ===
         /// <summary>
-        /// 現在の形態プリセットを即座に適用します。
+        /// 現在の形態に対応するビジュアルプリセットを即座に適用します。
         /// </summary>
         public void ApplyVisualImmediate()
         {
@@ -74,7 +74,7 @@ namespace App.Runtime.Player
         }
 
         /// <summary>
-        /// 現在の形態プリセットに滑らかに移行します。
+        /// 現在の形態に対応するビジュアルプリセットへ滑らかに移行します。
         /// </summary>
         public void ApplyVisualSmooth()
         {
@@ -111,7 +111,6 @@ namespace App.Runtime.Player
 
             // スケール
             var bodyScaleMul = p.bodyScaleBySize.Evaluate(tSize);
-            if (body) body.transform.localScale = Vector3.one * bodyScaleMul;
 
             // 色/発光
             var baseCol = p.colorBySize.Evaluate(Mathf.InverseLerp(0.2f, 3f, tSize));
