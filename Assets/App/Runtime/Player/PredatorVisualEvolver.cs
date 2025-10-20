@@ -124,7 +124,6 @@ namespace App.Runtime.Player
             if (body)
             {
                 body.ApplyGenome(g); // 既存の見た目反映（hue/emissionを利用している場合）
-                if (body.spriteRenderer) body.spriteRenderer.color = finalCol;
             }
 
             var target = materialTarget ? materialTarget : (body ? body.targetRenderer : null);

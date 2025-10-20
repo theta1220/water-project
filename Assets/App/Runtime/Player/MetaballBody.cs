@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace App.Runtime.Player
 {
     public class MetaballBody : MonoBehaviour
     {
         public Renderer targetRenderer;
-        public SpriteRenderer spriteRenderer;
+        public SpriteRenderer[] sprites;
+        public TrailRenderer[] trails;
         public string viscosityProp = "_Viscosity";
         public string hueProp = "_Hue";
         public string emissionProp = "_Emission";
@@ -25,11 +27,16 @@ namespace App.Runtime.Player
                 if (mat.HasProperty(emissionProp)) mat.SetFloat(emissionProp, g.emission);
             }
 
-            if (spriteRenderer)
-            {
-                var c = Color.HSVToRGB(g.hue, 0.8f, Mathf.Clamp01(0.5f + g.emission * 0.5f));
-                spriteRenderer.color = c;
-            }
+            var c = Color.HSVToRGB(g.hue, 0.8f, Mathf.Clamp01(0.5f + g.emission * 0.5f));
+            // foreach (var sprite in sprites)
+            // {
+            //     sprite.color = c;
+            // }
+            //
+            // foreach (var trail in trails)
+            // {
+            //     trail.startColor = c;
+            // }
         }
     }
 }

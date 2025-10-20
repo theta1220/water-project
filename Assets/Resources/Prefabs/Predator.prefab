@@ -10416,7 +10416,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRenderer: {fileID: 0}
-  spriteRenderer: {fileID: 1028410075814995871}
+  sprites:
+  - {fileID: 1287535450953926351}
+  - {fileID: 1047149182886946722}
+  - {fileID: 4174765472804869863}
+  trails:
+  - {fileID: 5982337950670223384}
   viscosityProp: _Viscosity
   hueProp: _Hue
   emissionProp: _Emission

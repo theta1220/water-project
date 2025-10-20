@@ -213,8 +213,6 @@ public class LayerPostFeature : ScriptableRendererFeature
 
         public void Cleanup()
         {
-            CoreUtils.Destroy(effectMat);
-            effectMat = null;
         }
     }
 
