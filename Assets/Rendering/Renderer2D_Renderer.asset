@@ -129,7 +129,7 @@ MonoBehaviour:
     featureName: CharacterShadow
     layerMask:
       serializedVersion: 2
-      m_Bits: 208
+      m_Bits: 1232
     captureEvent: 400
     effectEvent: 550
     compositeEvent: 500
