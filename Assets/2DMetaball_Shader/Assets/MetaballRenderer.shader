@@ -66,7 +66,7 @@ SubShader
         {
             fixed4 color = tex2D(_MainTex, i.texcoord);
             clip(color.a - _Cutoff);
-            color = color.a < _Stroke ? _StrokeColor : _Color;
+            color = color.a < _Stroke ? _StrokeColor : color;
             return color;
         }
     ENDCG

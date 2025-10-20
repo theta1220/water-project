@@ -18,25 +18,25 @@ namespace App.Runtime.Player
         public float eatCooldown = 0.25f;
         [Range(0, 1)] public float preyWeight = 0.35f;
         [Range(0, 1)] public float mutationStrength = 0.3f;
-        public float speedBoostOnEat = 0.1f;
+        public float eatImpulse = 5f; // 捕食時のインパルス
         public float bitePadding = 0.05f;
-                public float suctionForce = 6f;
-        
-                [Header("Health")]
-                public float maxHealth = 100f;
-                [SerializeField] private float currentHealth;
-                public float healthDecayRate = 1f; // 1秒あたりの体力減少量
-                public float collisionDamage = 10f; // 衝突1回あたりのダメージ
-                public float healthRecoverOnEat = 20f; // 捕食1回あたりの回復量
-        
-                [Header("Movement")]
-                        public float accel = 20f;
+        public float suctionForce = 6f;
 
-                        public float dragLinear = 2f;
+        [Header("Health")] public float maxHealth = 100f;
+        [SerializeField] private float currentHealth;
+        public float healthDecayRate = 1f; // 1秒あたりの体力減少量
+        public float collisionDamage = 10f; // 衝突1回あたりのダメージ
+        public float healthRecoverOnEat = 20f; // 捕食1回あたりの回復量
 
-                        public float boostMultiplier = 1.5f;
-
-                        public float boostDecayMultiplier = 0.95f;
+        [Header("Movement")] 
+        public float minSpeed = 2f;
+        public float accel = 20f;
+        public float dragLinear = 2f;
+        public float boostMultiplier = 1.5f;
+        public float boostDecayMultiplier = 0.95f;
+        public float headWobbleFrequency = 5f; // 揺れの速さ
+        public float moveWobbleAmplitude = 0.5f; // 揺れの大きさ（移動）
+        private float wobblePhase; // 揺れの位相
 
         [Header("AI Settings")] public bool aiControlled = true;
         public float wanderInterval = 1.4f;
@@ -73,8 +73,25 @@ namespace App.Runtime.Player
 
         [Header("Debug")] public bool debugLogs = false;
 
+        [HideInInspector] public Vector2 separation;
+        [HideInInspector] public Vector2 alignment;
+        [HideInInspector] public Vector2 cohesion;
+
+        public void ReceiveFlockingVectors(Vector2 separation, Vector2 alignment, Vector2 cohesion)
+        {
+            this.separation = separation;
+            this.alignment = alignment;
+            this.cohesion = cohesion;
+        }
+
+        [Header("Flocking")]
+        public float separationWeight = 1.5f;
+        public float alignmentWeight = 1.0f;
+        public float cohesionWeight = 1.0f;
+        public float flockingRange = 5f;
         // === 内部 ===
         private Rigidbody2D rb;
+        public Rigidbody2D Rb => rb;
         private CircleCollider2D selfCol;
         private PredatorMorphController morphCtl;
 
@@ -99,6 +116,22 @@ namespace App.Runtime.Player
         private readonly List<Carry> _carries = new();
 
         // ===================== ライフサイクル =====================
+        private void OnEnable()
+        {
+            if (FlockingGridJobManager.Instance != null)
+            {
+                FlockingGridJobManager.Instance.Register(this);
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (FlockingGridJobManager.Instance != null)
+            {
+                FlockingGridJobManager.Instance.Unregister(this);
+            }
+        }
+
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -138,7 +171,7 @@ namespace App.Runtime.Player
             ApplyDamping();
             UpdateCarryAndDigest();
             UpdateRotation();
-            
+
             // --- ゲノム減衰 --- 
             bool isBoosting = !aiControlled && Input.GetButton("Jump"); // プレイヤー操作時のみJumpキーをチェック
             var currentDecayFactor = isBoosting ? decayFactor * boostDecayMultiplier : decayFactor;
@@ -147,6 +180,18 @@ namespace App.Runtime.Player
             // 移動による体力減少
             var damage = rb.linearVelocity.magnitude * healthDecayRate * Time.fixedDeltaTime;
             TakeDamage(damage);
+
+            wobblePhase += rb.linearVelocity.magnitude * headWobbleFrequency * Time.fixedDeltaTime;
+
+            if (aiControlled && rb.linearVelocity.magnitude < minSpeed)
+            {
+                var dir = rb.linearVelocity.normalized;
+                if (dir == Vector2.zero)
+                {
+                    dir = Random.insideUnitCircle.normalized;
+                }
+                rb.linearVelocity = dir * minSpeed;
+            }
         }
 
         private void UpdateRotation()
@@ -175,6 +220,11 @@ namespace App.Runtime.Player
         {
             var dir = Vector2.zero;
 
+            // フロッキングの計算
+            var flockingVector = separation * separationWeight +
+                                 alignment * alignmentWeight +
+                                 cohesion * cohesionWeight;
+
             // 外部ターゲットを優先
             if (useExternalTarget && _externalTarget)
             {
@@ -194,14 +244,14 @@ namespace App.Runtime.Player
             {
                 var toPrey = (Vector2)currentTarget.transform.position - rb.position;
                 rb.AddForce(toPrey.normalized * suctionForce, ForceMode2D.Force);
-                dir = toPrey.normalized;
+                dir = toPrey.normalized + flockingVector * 0.5f; // ターゲットがいる場合はフロッキングの影響を減らす
             }
             else
             {
                 wanderTimer -= Time.fixedDeltaTime;
                 if (wanderTimer <= 0) ResetWander();
                 aiMoveDir = (aiMoveDir + Random.insideUnitCircle * wanderJitter).normalized;
-                dir = aiMoveDir;
+                dir = aiMoveDir + flockingVector;
             }
 
             if (dir == Vector2.zero) ResetWander();
@@ -217,8 +267,14 @@ namespace App.Runtime.Player
         private void ApplyDrive(Vector2 dir, float thrustMul)
         {
             dir = dir.normalized;
+
+            // 揺らぎの計算
+            var wobble = Mathf.Sin(wobblePhase) * moveWobbleAmplitude;
+            var perpendicular = new Vector2(-dir.y, dir.x);
+            var wobbleDir = dir + perpendicular * wobble;
+
             var force = accel * genome.speed * thrustMul;
-            rb.AddForce(dir * force, ForceMode2D.Force);
+            rb.AddForce(wobbleDir.normalized * force, ForceMode2D.Force);
         }
 
         private void ApplyDamping()
@@ -279,7 +335,7 @@ namespace App.Runtime.Player
                 var nutrition = prey.GetNutritionValue();
                 genome.size = Mathf.Clamp(genome.size + nutrition * digestNutritionScale, 0.2f, 3);
                 genome.emission = Mathf.Clamp01(genome.emission + nutrition * digestEmissionScale);
-                genome.BoostSpeed(nutrition, speedBoostOnEat);
+                rb.AddForce(transform.up * eatImpulse, ForceMode2D.Impulse);
                 currentHealth = Mathf.Min(maxHealth, currentHealth + healthRecoverOnEat);
                 ApplyPhenotype();
                 morphCtl?.NotifyAbsorb(nutrition, preyGene);
@@ -346,7 +402,6 @@ namespace App.Runtime.Player
                     var partNut = c.nutrition * delta;
                     genome.size = Mathf.Clamp(genome.size + partNut * digestNutritionScale, 0.2f, 3);
                     genome.emission = Mathf.Clamp01(genome.emission + partNut * digestEmissionScale);
-                    genome.BoostSpeed(partNut, speedBoostOnEat);
                     currentHealth = Mathf.Min(maxHealth, currentHealth + healthRecoverOnEat * delta);
                     ApplyPhenotype();
                     morphCtl?.NotifyAbsorb(partNut, c.snapshot);
@@ -455,11 +510,12 @@ namespace App.Runtime.Player
                 TakeDamage(collisionDamage);
             }
         }
-        
+
         public float GetHealthNormalized()
         {
             return currentHealth / maxHealth;
         }
+
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()

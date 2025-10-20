@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5330086535894234076}
   - component: {fileID: 6359084956315098213}
   - component: {fileID: 794964712453683354}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 1599050844935909688}
   - component: {fileID: 3187274397567863287}
   - component: {fileID: 7879580766397325527}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: EatParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

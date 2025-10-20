@@ -15,6 +15,8 @@ namespace App.Runtime.Player
         public float spawnInterval = 3.0f;
         public int maxPrey = 200;
         public int maxPredator = 20;
+        public float predatorSpawnProbability = 0.1f; // Predatorがスポーンする確率
+        public int preyToPredatorRatio = 5; // Predator1匹に対して必要なPreyの数
 
         [Header("Spawn area")] public Vector2 areaSize = new(30f, 30f);
         public bool useLocalSpace = false;
@@ -67,13 +69,18 @@ namespace App.Runtime.Player
 
         private void TrySpawn()
         {
-            if (preyCount < maxPrey)
-            {
-                SpawnPrey();
-            }
-            if (predatorCount < maxPredator)
+            // プレデターのスポーン試行
+            bool predatorSpawned = false;
+            if (predatorCount < maxPredator && preyCount > predatorCount * preyToPredatorRatio && Random.value < predatorSpawnProbability)
             {
                 SpawnPredator();
+                predatorSpawned = true;
+            }
+
+            // プレデターがスポーンしなかった場合、またはPreyが上限に達していない場合にPreyをスポーン
+            if (!predatorSpawned && preyCount < maxPrey)
+            {
+                SpawnPrey();
             }
         }
 
@@ -82,6 +89,7 @@ namespace App.Runtime.Player
         /// </summary>
         private void SpawnPrey()
         {
+            if (preyCount >= maxPrey) return;
             if (!preyPrefab) return;
             var pos = RandomPosition();
             var go = Instantiate(preyPrefab, pos, Quaternion.identity);
@@ -102,6 +110,7 @@ namespace App.Runtime.Player
         /// </summary>
         private void SpawnPredator()
         {
+            if (predatorCount >= maxPredator) return;
             if (!predatorPrefab) return;
             var pos = RandomPosition();
             var go = Instantiate(predatorPrefab, pos, Quaternion.identity);

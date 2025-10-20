@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Water
-  m_Shader: {fileID: 4800000, guid: 9f4e017adf92f43be9fe169bae62f4bb, type: 3}
+  m_Name: PredatorEye
+  m_Shader: {fileID: 4800000, guid: 367c0cc322794eabbc9a6c3eddabfe63, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -28,15 +28,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 8400000, guid: f6d40ab6d3647c446a8c906c5789150b, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MetaBallTex:
-        m_Texture: {fileID: 8400000, guid: f6d40ab6d3647c446a8c906c5789150b, type: 2}
+    - _MaskTex:
+        m_Texture: {fileID: 2800000, guid: 3f51494c41791384f8eb5a34c665180c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -45,19 +41,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Cutoff: 0.08
-    - _EdgeAlpha: 0
-    - _EdgeBrightness: 1.158
+    - _EmissionStrength: 4.45
     - _EnableExternalAlpha: 0
-    - _Glossiness: 0.5
-    - _GradientPower: 4
-    - _Metallic: 0
-    - _Scale: 0.0271
-    - _Stroke: 0
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _StrokeColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
