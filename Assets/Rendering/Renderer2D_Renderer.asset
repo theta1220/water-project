@@ -20,6 +20,38 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
+--- !u!114 &-661655425231445408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e36c9b62cdf0841abdcdd9172fc777, type: 3}
+  m_Name: LayerMaskCompositeFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    featureName: LayerMaskCompositeFeature
+    maskLayer:
+      serializedVersion: 2
+      m_Bits: 208
+    contentLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    maskCaptureEvent: 550
+    contentCaptureEvent: 500
+    compositeEvent: 550
+    hdr: 1
+    downsample: 1
+    invertMask: 0
+    maskThreshold: 0.863
+    applyToColor: 1
+    applyToAlpha: 1
+    showInSceneView: 0
+    compositeShader: {fileID: 4800000, guid: 1f57c8834a20b9b47a2a56c2598ccf02, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,8 +80,11 @@ MonoBehaviour:
   - {fileID: 4287038320547446197}
   - {fileID: 570893985299291687}
   - {fileID: 8256284627839069832}
+  - {fileID: 6585683411160414821}
+  - {fileID: -661655425231445408}
+  - {fileID: 1995631278415763288}
   - {fileID: -1208975675016233835}
-  m_RendererFeatureMap: b5bdb78aa39e7e3b27de2b0e0e39ec0788aedd162037947295bc916c07db38ef
+  m_RendererFeatureMap: b5bdb78aa39e7e3b27de2b0e0e39ec0788aedd1620379472653a66852b0c655b60a25e77e553d1f65857a10c13e8b11b95bc916c07db38ef
   m_UseNativeRenderPass: 0
   m_TransparencySortMode: 0
   m_TransparencySortAxis: {x: 0, y: 1, z: 0}
@@ -105,6 +140,38 @@ MonoBehaviour:
     compositeShader: {fileID: 4800000, guid: 947f801d1ae440a8a476c0f69ca46ac1, type: 3}
     useSourceAlpha: 1
     showInSceneView: 0
+--- !u!114 &1995631278415763288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e36c9b62cdf0841abdcdd9172fc777, type: 3}
+  m_Name: LayerMaskCompositeFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    featureName: LayerMaskCompositeFeature
+    maskLayer:
+      serializedVersion: 2
+      m_Bits: 1024
+    contentLayer:
+      serializedVersion: 2
+      m_Bits: 1024
+    maskCaptureEvent: 550
+    contentCaptureEvent: 500
+    compositeEvent: 550
+    hdr: 1
+    downsample: 1
+    invertMask: 0
+    maskThreshold: 0
+    applyToColor: 1
+    applyToAlpha: 1
+    showInSceneView: 0
+    compositeShader: {fileID: 0}
 --- !u!114 &4287038320547446197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +200,32 @@ MonoBehaviour:
     compositeShader: {fileID: 4800000, guid: 947f801d1ae440a8a476c0f69ca46ac1, type: 3}
     useSourceAlpha: 1
     showInSceneView: 0
+--- !u!114 &6585683411160414821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: babb5241a60449dfa63f751152761a71, type: 3}
+  m_Name: LayerFillFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    featureName: LayerFillFeature
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 208
+    fillColor: {r: 1, g: 1, b: 1, a: 1}
+    captureEvent: 500
+    compositeEvent: 550
+    hdr: 1
+    downsample: 1
+    useSourceAlpha: 1
+    showInSceneView: 0
+    compositeShader: {fileID: 4800000, guid: 4e42c65247194b5199c380edc1455e77, type: 3}
 --- !u!114 &8256284627839069832
 MonoBehaviour:
   m_ObjectHideFlags: 0
