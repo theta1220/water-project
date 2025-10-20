@@ -211,7 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5459428626241804770}
   - component: {fileID: 7478541772018250716}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,7 +256,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48d259731addb3043a886a0f2506c676, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -298,7 +298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6483157534970587804}
   - component: {fileID: 4337887829312032861}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Circle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48d259731addb3043a886a0f2506c676, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -385,7 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1718701379239647186}
   - component: {fileID: 7636704741539054775}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Circle (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48d259731addb3043a886a0f2506c676, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
