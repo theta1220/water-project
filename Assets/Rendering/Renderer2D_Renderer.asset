@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
   m_Name: FullScreenPassRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   injectionPoint: 600
   fetchColorBuffer: 1
   requirements: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
     maskThreshold: 0.863
     applyToColor: 1
     applyToAlpha: 1
-    showInSceneView: 0
+    showInSceneView: 1
     compositeShader: {fileID: 4800000, guid: 1f57c8834a20b9b47a2a56c2598ccf02, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -139,7 +139,7 @@ MonoBehaviour:
     postMaterial: {fileID: 2100000, guid: 5f90c7b43f2f5324489a429d1cfd9da3, type: 2}
     compositeShader: {fileID: 4800000, guid: 947f801d1ae440a8a476c0f69ca46ac1, type: 3}
     useSourceAlpha: 1
-    showInSceneView: 0
+    showInSceneView: 1
 --- !u!114 &1995631278415763288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
     maskThreshold: 0
     applyToColor: 1
     applyToAlpha: 1
-    showInSceneView: 0
+    showInSceneView: 1
     compositeShader: {fileID: 0}
 --- !u!114 &4287038320547446197
 MonoBehaviour:
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f482654c09412289864ad32d79b1bd, type: 3}
   m_Name: Background
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     featureName: Background
     layerMask:
@@ -199,7 +199,7 @@ MonoBehaviour:
     postMaterial: {fileID: 0}
     compositeShader: {fileID: 4800000, guid: 947f801d1ae440a8a476c0f69ca46ac1, type: 3}
     useSourceAlpha: 1
-    showInSceneView: 0
+    showInSceneView: 1
 --- !u!114 &6585683411160414821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
     hdr: 1
     downsample: 1
     useSourceAlpha: 1
-    showInSceneView: 0
+    showInSceneView: 1
     compositeShader: {fileID: 4800000, guid: 4e42c65247194b5199c380edc1455e77, type: 3}
 --- !u!114 &8256284627839069832
 MonoBehaviour:
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f482654c09412289864ad32d79b1bd, type: 3}
   m_Name: Character
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     featureName: Character
     layerMask:
@@ -253,4 +253,4 @@ MonoBehaviour:
     postMaterial: {fileID: 0}
     compositeShader: {fileID: 4800000, guid: 947f801d1ae440a8a476c0f69ca46ac1, type: 3}
     useSourceAlpha: 1
-    showInSceneView: 0
+    showInSceneView: 1

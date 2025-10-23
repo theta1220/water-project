@@ -91,7 +91,9 @@ Shader "Hidden/LayerMaskComposite"
                 if (_ApplyToAlpha >= 0.5)
                     alpha *= maskAlpha;
 
-                color += 0.1;
+                maskAlpha = ceil(maskAlpha);
+
+                color += 0.05;
 
                 // test
                 // color.rgb = float3(1,0,0);

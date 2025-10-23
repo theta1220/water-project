@@ -9,9 +9,7 @@ namespace App.Runtime.Framework
         private void Awake()
         {
             // アプリケーションのターゲットフレームレートを設定
-            Application.targetFrameRate = 60;
-
-            Screen.SetResolution(resolution.x, resolution.y, FullScreenMode.MaximizedWindow);
+            Screen.SetResolution(resolution.x, resolution.y, FullScreenMode.ExclusiveFullScreen);
         }
     }
 }

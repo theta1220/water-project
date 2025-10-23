@@ -37,6 +37,7 @@ namespace App.Runtime.Player
         public float headWobbleFrequency = 5f; // 揺れの速さ
         public float moveWobbleAmplitude = 0.5f; // 揺れの大きさ（移動）
         private float wobblePhase; // 揺れの位相
+        public float rotationSpeed = 0.1f;
 
         [Header("AI Settings")] public bool aiControlled = true;
         public float wanderInterval = 1.4f;
@@ -170,7 +171,6 @@ namespace App.Runtime.Player
             UpdateHunting();
             ApplyDamping();
             UpdateCarryAndDigest();
-            UpdateRotation();
 
             // --- ゲノム減衰 --- 
             bool isBoosting = !aiControlled && Input.GetButton("Jump"); // プレイヤー操作時のみJumpキーをチェック
@@ -183,15 +183,15 @@ namespace App.Runtime.Player
 
             wobblePhase += rb.linearVelocity.magnitude * headWobbleFrequency * Time.fixedDeltaTime;
 
-            if (aiControlled && rb.linearVelocity.magnitude < minSpeed)
-            {
-                var dir = rb.linearVelocity.normalized;
-                if (dir == Vector2.zero)
-                {
-                    dir = Random.insideUnitCircle.normalized;
-                }
-                rb.linearVelocity = dir * minSpeed;
-            }
+            // if (aiControlled && rb.linearVelocity.magnitude < minSpeed)
+            // {
+            //     var dir = rb.linearVelocity.normalized;
+            //     if (dir == Vector2.zero)
+            //     {
+            //         dir = Random.insideUnitCircle.normalized;
+            //     }
+            //     rb.linearVelocity = dir * minSpeed;
+            // }
         }
 
         private void UpdateRotation()
@@ -266,6 +266,11 @@ namespace App.Runtime.Player
 
         private void ApplyDrive(Vector2 dir, float thrustMul)
         {
+            if (dir.magnitude == 0)
+            {
+                return;
+            }
+            
             dir = dir.normalized;
 
             // 揺らぎの計算
@@ -274,7 +279,10 @@ namespace App.Runtime.Player
             var wobbleDir = dir + perpendicular * wobble;
 
             var force = accel * genome.speed * thrustMul;
-            rb.AddForce(wobbleDir.normalized * force, ForceMode2D.Force);
+            rb.AddForce(transform.up * force, ForceMode2D.Force);
+            
+            var targetRotation = Quaternion.LookRotation(Vector3.forward, wobbleDir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
         }
 
         private void ApplyDamping()

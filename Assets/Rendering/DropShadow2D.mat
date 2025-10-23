@@ -46,13 +46,13 @@ Material:
     - _EnableExternalAlpha: 0
     - _KeepOriginal: 1
     - _KernelRadius: 8
-    - _SigmaPixels: 8
+    - _SigmaPixels: 6.42
     - _YFlip: 1
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0, g: 0, b: 0, a: 0.47058824}
-    - _ShadowOffset: {r: -0.005, g: 0.01, b: 0, a: 0}
+    - _ShadowColor: {r: 0.023733204, g: 0.06277209, b: 0.1006288, a: 0.4}
+    - _ShadowOffset: {r: -0.001, g: 0.01, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
