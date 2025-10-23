@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: FullScreenPassRendererFeature
+  m_Name: Ripple
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   injectionPoint: 600
   fetchColorBuffer: 1
   requirements: 0
@@ -30,11 +30,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8e36c9b62cdf0841abdcdd9172fc777, type: 3}
-  m_Name: LayerMaskCompositeFeature
+  m_Name: CharacterMask
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    featureName: LayerMaskCompositeFeature
+    featureName: CharacterMask
     maskLayer:
       serializedVersion: 2
       m_Bits: 208
@@ -50,6 +50,7 @@ MonoBehaviour:
     maskThreshold: 0.863
     applyToColor: 1
     applyToAlpha: 1
+    contentColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
     showInSceneView: 1
     compositeShader: {fileID: 4800000, guid: 1f57c8834a20b9b47a2a56c2598ccf02, type: 3}
 --- !u!114 &11400000
@@ -81,10 +82,11 @@ MonoBehaviour:
   - {fileID: 570893985299291687}
   - {fileID: 8256284627839069832}
   - {fileID: 6585683411160414821}
+  - {fileID: 4452723911467898255}
   - {fileID: -661655425231445408}
   - {fileID: 1995631278415763288}
   - {fileID: -1208975675016233835}
-  m_RendererFeatureMap: b5bdb78aa39e7e3b27de2b0e0e39ec0788aedd1620379472653a66852b0c655b60a25e77e553d1f65857a10c13e8b11b95bc916c07db38ef
+  m_RendererFeatureMap: b5bdb78aa39e7e3b27de2b0e0e39ec0788aedd1620379472653a66852b0c655b8f95ee51ce40cb3d60a25e77e553d1f65857a10c13e8b11b95bc916c07db38ef
   m_UseNativeRenderPass: 0
   m_TransparencySortMode: 0
   m_TransparencySortAxis: {x: 0, y: 1, z: 0}
@@ -124,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f482654c09412289864ad32d79b1bd, type: 3}
   m_Name: CharacterShadow
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     featureName: CharacterShadow
     layerMask:
@@ -150,11 +152,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8e36c9b62cdf0841abdcdd9172fc777, type: 3}
-  m_Name: LayerMaskCompositeFeature
+  m_Name: Character2Mask
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    featureName: LayerMaskCompositeFeature
+    featureName: Character2Mask
     maskLayer:
       serializedVersion: 2
       m_Bits: 1024
@@ -170,6 +172,7 @@ MonoBehaviour:
     maskThreshold: 0
     applyToColor: 1
     applyToAlpha: 1
+    contentColor: {r: 0, g: 0, b: 0, a: 0}
     showInSceneView: 1
     compositeShader: {fileID: 0}
 --- !u!114 &4287038320547446197
@@ -190,6 +193,34 @@ MonoBehaviour:
     layerMask:
       serializedVersion: 2
       m_Bits: 512
+    captureEvent: 400
+    effectEvent: 550
+    compositeEvent: 500
+    hdr: 1
+    downsample: 1
+    includeCameraColor: 0
+    postMaterial: {fileID: 0}
+    compositeShader: {fileID: 4800000, guid: 947f801d1ae440a8a476c0f69ca46ac1, type: 3}
+    useSourceAlpha: 1
+    showInSceneView: 1
+--- !u!114 &4452723911467898255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97f482654c09412289864ad32d79b1bd, type: 3}
+  m_Name: BackEffects
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    featureName: BackEffects
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 4096
     captureEvent: 400
     effectEvent: 550
     compositeEvent: 500

@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.71, y: 1.14, z: 0}
-  m_LocalScale: {x: 0.28, y: 0.28, z: 0.56}
+  m_LocalScale: {x: 0.17, y: 0.17, z: 0.34}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5459428626241804770}
@@ -218,6 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyDistance: 50
+  debugLogs: 0
 --- !u!1 &2416834596817779049
 GameObject:
   m_ObjectHideFlags: 0

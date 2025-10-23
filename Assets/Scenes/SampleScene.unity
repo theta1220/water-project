@@ -403,8 +403,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.05882353}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.047058824}
+      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
+      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5236,8 +5236,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.05882353}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.047058824}
+      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
+      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -15390,8 +15390,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.05882353}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.047058824}
+      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
+      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -19934,7 +19934,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -30, y: -14.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1797118077}
@@ -20131,7 +20131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthUI: {fileID: 142846361}
-  myPredator: {fileID: 530115346}
+  myPredator: {fileID: 674739979103041141, guid: 9cc1176007ea1c443ab94a8340bdb701, type: 3}
+  cam: {fileID: 1297254642}
 --- !u!4 &456600829
 Transform:
   m_ObjectHideFlags: 0
@@ -20175,7 +20176,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -44.3, y: -2.5, z: 0}
-  m_LocalScale: {x: 1.06, y: 1.06, z: 0.53}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1797118077}
@@ -25084,22 +25085,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &530115346 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2050330583369461379, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-  m_PrefabInstance: {fileID: 886513097}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f1086fb5594b2b8041735ae59956ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &530115349 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-  m_PrefabInstance: {fileID: 886513097}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &540422457
 GameObject:
   m_ObjectHideFlags: 0
@@ -30017,50 +30002,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &626952161
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 626952162}
-  - component: {fileID: 626952163}
-  m_Layer: 0
-  m_Name: cm
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &626952162
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626952161}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.11, y: -2.9, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1297254643}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &626952163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626952161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &643580572
 GameObject:
   m_ObjectHideFlags: 0
@@ -35222,8 +35163,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.05882353}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.047058824}
+      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
+      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -39766,84 +39707,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 14.5, y: -19.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1797118077}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &886513097
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 335439584393110926, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: dampening
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2050330583369461379, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: aiControlled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5307157285751449221, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: dampening
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7521805159106154122, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: m_Name
-      value: Predator
-      objectReference: {fileID: 0}
-    - target: {fileID: 7919342901757104702, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
-      propertyPath: dampening
-      value: 0.1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
 --- !u!1 &1040242797
 GameObject:
   m_ObjectHideFlags: 0
@@ -45053,7 +44921,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 530115349}
+    TrackingTarget: {fileID: 0}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -45088,8 +44956,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 626952162}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1297254644
@@ -45104,7 +44971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b51e295630450fb12ad4de20985807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 530115349}
+  target: {fileID: 0}
   minFOV: 10
   maxFOV: 10
   speedThreshold: 1
@@ -45143,13 +45010,13 @@ MonoBehaviour:
   initialPrey: 0
   initialPredator: 0
   spawnInterval: 0.1
-  maxPrey: 50
+  maxPrey: 20
   maxPredator: 100
   predatorSpawnProbability: 0.1
   preyToPredatorRatio: 5
   areaSize: {x: 61.4, y: 30}
   useLocalSpace: 1
-  preySpeedRange: {x: 0.5, y: 2}
+  preySpeedRange: {x: 1, y: 2}
   preyViscosityRange: {x: 0.5, y: 2.5}
   preySizeRange: {x: 0.3, y: 1.6}
   preyHueRange: {x: 0, y: 1}
@@ -45458,8 +45325,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.05882353}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.047058824}
+      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
+      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -50002,7 +49869,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 27.9, y: 3.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1797118077}
@@ -50291,8 +50158,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.05882353}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.047058824}
+      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
+      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -54835,7 +54702,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -12.6, y: 14.9, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1797118077}
@@ -60280,7 +60147,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1745
+    m_Bits: 5841
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -60646,8 +60513,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.05882353}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.047058824}
+      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
+      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -65307,4 +65174,3 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1202199323}
   - {fileID: 1040242800}
-  - {fileID: 886513097}

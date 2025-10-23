@@ -8,6 +8,7 @@ Shader "Hidden/LayerMaskComposite"
         _InvertMask("Invert Mask (0|1)", Float) = 0
         _ApplyToColor("Apply To Color (0|1)", Float) = 1
         _ApplyToAlpha("Apply To Alpha (0|1)", Float) = 1
+        _ContentColor("Content Color", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -38,6 +39,7 @@ Shader "Hidden/LayerMaskComposite"
             float  _InvertMask;
             float  _ApplyToColor;
             float  _ApplyToAlpha;
+            float4 _ContentColor;
 
             struct Attributes
             {
@@ -84,8 +86,8 @@ Shader "Hidden/LayerMaskComposite"
                 float mask = EvaluateMask(maskAlpha);
 
                 float3 color = content.rgb;
-                if (_ApplyToColor >= 0.5)
-                    color *= maskAlpha;
+                // if (_ApplyToColor >= 0.5)
+                //     color *= maskAlpha;
 
                 float alpha = content.a;
                 if (_ApplyToAlpha >= 0.5)
@@ -93,7 +95,8 @@ Shader "Hidden/LayerMaskComposite"
 
                 maskAlpha = ceil(maskAlpha);
 
-                color += 0.05;
+                // color += 0.05;
+                color += _ContentColor.rgb;
 
                 // test
                 // color.rgb = float3(1,0,0);

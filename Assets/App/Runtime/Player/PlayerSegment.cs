@@ -6,13 +6,13 @@ namespace App.Runtime.Player
 {
     public class PlayerSegment : MonoBehaviour
     {
-        [SerializeField] private int delaySize = 5;
-        [SerializeField] private float dampening = 0.2f;
+        [SerializeField] private int delaySize = 2;
+        [SerializeField] private float dampening = 0.5f;
         
         private Transform parentTransform;
         private Quaternion targetRotation;
         private Quaternion rotationOffset;
-        private Queue<Quaternion> parentPreviousRotationQueue;
+        private List<Quaternion> parentPreviousRotationQueue;
 
         private void Start()
         {
@@ -21,8 +21,7 @@ namespace App.Runtime.Player
             {
                 targetRotation = transform.rotation;
                 rotationOffset = Quaternion.Inverse(parentTransform.rotation) * targetRotation;
-                parentPreviousRotationQueue = new Queue<Quaternion>();
-                parentPreviousRotationQueue.Enqueue(parentTransform.rotation);
+                parentPreviousRotationQueue = new List<Quaternion> { parentTransform.rotation };
             }
         }
 
@@ -35,7 +34,7 @@ namespace App.Runtime.Player
 
             if (parentPreviousRotationQueue.Count > delaySize)
             {
-                parentPreviousRotationQueue.Dequeue();
+                parentPreviousRotationQueue.RemoveAt(0);
             }
 
             var parentPreviousRotation = parentPreviousRotationQueue.First();
@@ -48,7 +47,7 @@ namespace App.Runtime.Player
 
             // 回転を適用
             transform.rotation = targetRotation;
-            parentPreviousRotationQueue.Enqueue(parentRotation);
+            parentPreviousRotationQueue.Add(parentRotation);
         }
     }
 }

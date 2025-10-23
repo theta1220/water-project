@@ -28,6 +28,7 @@ public class LayerMaskCompositeFeature : ScriptableRendererFeature
         [Range(0f, 1f)] public float maskThreshold = 0f;
         public bool applyToColor = true;
         public bool applyToAlpha = true;
+        public Color contentColor;
 
         [Header("Debug")] public bool showInSceneView = false;
 
@@ -149,6 +150,7 @@ public class LayerMaskCompositeFeature : ScriptableRendererFeature
         static readonly int _InvertMask = Shader.PropertyToID("_InvertMask");
         static readonly int _ApplyColor = Shader.PropertyToID("_ApplyToColor");
         static readonly int _ApplyAlpha = Shader.PropertyToID("_ApplyToAlpha");
+        static readonly int _ContentColor = Shader.PropertyToID("_ContentColor");
 
         public CompositePass(string tag, Shader shader, Settings settings)
         {
@@ -188,6 +190,7 @@ public class LayerMaskCompositeFeature : ScriptableRendererFeature
             compositeMat.SetFloat(_InvertMask, featureSettings.invertMask ? 1f : 0f);
             compositeMat.SetFloat(_ApplyColor, featureSettings.applyToColor ? 1f : 0f);
             compositeMat.SetFloat(_ApplyAlpha, featureSettings.applyToAlpha ? 1f : 0f);
+            compositeMat.SetColor(_ContentColor, featureSettings.contentColor);
 
             var cmd = CommandBufferPool.Get(profilerTag);
             using (new ProfilingScope(cmd, new ProfilingSampler(profilerTag)))

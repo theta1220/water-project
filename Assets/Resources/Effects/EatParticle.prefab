@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 1599050844935909688}
   - component: {fileID: 3187274397567863287}
   - component: {fileID: 7879580766397325527}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: EatParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -433,8 +433,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
-      minScalar: 5
+      scalar: 10
+      minScalar: 10
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1315,13 +1315,13 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.49557495
-          value: 0.99741554
-          inSlope: 0
-          outSlope: 0
+          time: 0.20670234
+          value: 0.85550123
+          inSlope: 1.7363628
+          outSlope: 1.7363628
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0
+          inWeight: 0.6203042
           outWeight: 0
         - serializedVersion: 3
           time: 1

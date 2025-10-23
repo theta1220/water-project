@@ -32,6 +32,7 @@ namespace App.Runtime.Player
         public float minSpeed = 2f;
         public float accel = 20f;
         public float dragLinear = 2f;
+        public float preBoostMultiplier = 0.5f;
         public float boostMultiplier = 1.5f;
         public float boostDecayMultiplier = 0.95f;
         public float headWobbleFrequency = 5f; // 揺れの速さ
@@ -117,15 +118,7 @@ namespace App.Runtime.Player
         private readonly List<Carry> _carries = new();
 
         // ===================== ライフサイクル =====================
-        private void OnEnable()
-        {
-            if (FlockingGridJobManager.Instance != null)
-            {
-                FlockingGridJobManager.Instance.Register(this);
-            }
-        }
-
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (FlockingGridJobManager.Instance != null)
             {
@@ -133,7 +126,7 @@ namespace App.Runtime.Player
             }
         }
 
-        private void Awake()
+        private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = 0;
@@ -147,10 +140,12 @@ namespace App.Runtime.Player
             SetupContactFilter();
 
             currentHealth = maxHealth;
-        }
-
-        private void Start()
-        {
+            
+            if (FlockingGridJobManager.Instance != null)
+            {
+                FlockingGridJobManager.Instance.Register(this);
+            }
+            
             ApplyPhenotype();
             ResetWander();
         }
@@ -171,6 +166,7 @@ namespace App.Runtime.Player
             UpdateHunting();
             ApplyDamping();
             UpdateCarryAndDigest();
+            // UpdateRotation();
 
             // --- ゲノム減衰 --- 
             bool isBoosting = !aiControlled && Input.GetButton("Jump"); // プレイヤー操作時のみJumpキーをチェック
@@ -212,8 +208,21 @@ namespace App.Runtime.Player
         {
             var h = Input.GetAxisRaw("Horizontal");
             var v = Input.GetAxisRaw("Vertical");
-            var thrust = Input.GetButton("Jump") ? boostMultiplier : 1f;
-            ApplyDrive(new Vector2(h, v).normalized, thrust);
+
+            var boost = 1f;
+            var forceMode = ForceMode2D.Force;
+            if (Input.GetButton("Jump"))
+            {
+                boost = preBoostMultiplier;
+            }
+
+            if (Input.GetButtonUp("Jump"))
+            {
+                boost = boostMultiplier;
+                forceMode = ForceMode2D.Impulse;
+            }
+            
+            ApplyDrive(new Vector2(h, v).normalized, boost, forceMode);
         }
 
         private void UpdateAI()
@@ -255,7 +264,7 @@ namespace App.Runtime.Player
             }
 
             if (dir == Vector2.zero) ResetWander();
-            ApplyDrive(dir, 1f);
+            ApplyDrive(dir, 1f, ForceMode2D.Force);
         }
 
         private void ResetWander()
@@ -264,7 +273,7 @@ namespace App.Runtime.Player
             aiMoveDir = Random.insideUnitCircle.normalized;
         }
 
-        private void ApplyDrive(Vector2 dir, float thrustMul)
+        private void ApplyDrive(Vector2 dir, float thrustMul, ForceMode2D forceMode)
         {
             if (dir.magnitude == 0)
             {
@@ -278,8 +287,9 @@ namespace App.Runtime.Player
             var perpendicular = new Vector2(-dir.y, dir.x);
             var wobbleDir = dir + perpendicular * wobble;
 
-            var force = accel * genome.speed * thrustMul;
-            rb.AddForce(transform.up * force, ForceMode2D.Force);
+            // var force = accel * genome.speed * thrustMul;
+            var force = accel * thrustMul;
+            rb.AddForce(transform.up * force, forceMode);
             
             var targetRotation = Quaternion.LookRotation(Vector3.forward, wobbleDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
@@ -338,16 +348,26 @@ namespace App.Runtime.Player
         {
             if (captureMode == CaptureMode.InstantEat)
             {
+                prey.OnEaten();
                 var preyGene = prey.GetGenomeForConsumption();
                 genome.Absorb(preyGene, preyWeight, mutationStrength);
                 var nutrition = prey.GetNutritionValue();
                 genome.size = Mathf.Clamp(genome.size + nutrition * digestNutritionScale, 0.2f, 3);
                 genome.emission = Mathf.Clamp01(genome.emission + nutrition * digestEmissionScale);
-                rb.AddForce(transform.up * eatImpulse, ForceMode2D.Impulse);
+                rb.linearVelocity = Vector2.zero;
+                
+                if (_externalTarget != null)
+                {
+                    var vecToPrey = (prey.transform.position - transform.position).normalized;
+                    rb.AddForce(vecToPrey * eatImpulse, ForceMode2D.Impulse);
+                }
+                else
+                {
+                    rb.AddForce(transform.up * eatImpulse, ForceMode2D.Impulse);
+                }
                 currentHealth = Mathf.Min(maxHealth, currentHealth + healthRecoverOnEat);
                 ApplyPhenotype();
                 morphCtl?.NotifyAbsorb(nutrition, preyGene);
-                prey.OnEaten();
                 Instantiate(eatParticlePrefab, prey.gameObject.transform.position, Quaternion.identity);
                 return;
             }
