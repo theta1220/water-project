@@ -1,35 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aae764535a246fba70e0edd5000dea8, type: 3}
-  m_Name: StriderForm
-  m_EditorClassIdentifier: 
-  morphId: strider
-  displayName: Strider Form
-  description: "\u5C3E\u90E8\u306E\u7E4A\u6BDB\u304C\u767A\u9054\u3057\u3001\u9AD8\u901F\u3067\u79FB\u52D5\u3067\u304D\u308B\u3002\u6355\u98DF\u7BC4\u56F2\u306F\u5E83\u304C\u308B\u304C\u653B\u6483\u529B\u306F\u4F4E\u3044\u3002"
-  minTotalNutrition: 10
-  minSize: 0
-  minSpeed: 1.2
-  minSense: 0
-  minEmission: 0
-  maxViscosity: 999
-  requiredParentMorphId: base
-  addSize: 0
-  addEmission: 0
-  addHueShift: 0.05
-  bodyScaleMul: 1.1
-  overrideMaterial: {fileID: 0}
-  suctionMul: 1.1
-  accelMul: 1.3
-  biteDistanceAdd: 0
-  maxAttachmentsAdd: 0
-  nextMorphs:
-  - {fileID: 11400000, guid: fa6aff353efa75a47a79e47d5c0f1677, type: 2}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ad4e4858962c975e224a568dad74ed753ad4694952b7fadd9e80c228b35212eb
+size 1075

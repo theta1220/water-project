@@ -1,25 +1,3 @@
-%YAML 1.1
---- !u!114 &11400000
-MonoBehaviour:
-  m_Script: {fileID: 11500000, guid: 1aae764535a246fba70e0edd5000dea8, type: 3}
-  m_Name: SiphonForm
-  morphId: siphon
-  displayName: Siphon Form
-  description: "捕食器官が管状に変化し、遠距離から対象を吸い寄せる。成長は遅いが持続力が高い。"
-  minTotalNutrition: 25
-  minSize: 0
-  minSpeed: 0
-  minSense: 5.0
-  minEmission: 0
-  maxViscosity: 999
-  requiredParentMorphId: strider
-  addSize: 0
-  addEmission: 0.2
-  addHueShift: -0.05
-  bodyScaleMul: 1.1
-  overrideMaterial: {fileID: 0}
-  suctionMul: 1.8
-  accelMul: 0.9
-  biteDistanceAdd: 0.2
-  maxAttachmentsAdd: 1
-  nextMorphs: []
+version https://git-lfs.github.com/spec/v1
+oid sha256:943919a4a50c1a14e8dc287ff6ce9ebf3f4529166deb6279f069b65cfb56a51d
+size 691

@@ -6573,7 +6573,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 200
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -11061,16 +11061,16 @@ MonoBehaviour:
   eatImpulse: 0
   bitePadding: 0.05
   suctionForce: 6
-  maxHealth: 1000000
+  maxHealth: 100
   currentHealth: 0
   healthDecayRate: 1
   collisionDamage: 10
   healthRecoverOnEat: 20
   minSpeed: 2
-  accel: 2
+  accel: 0.1
   dragLinear: 20
   preBoostMultiplier: 0.2
-  boostMultiplier: 2
+  boostMultiplier: 10
   boostDecayMultiplier: 0.99
   headWobbleFrequency: 2
   moveWobbleAmplitude: 0

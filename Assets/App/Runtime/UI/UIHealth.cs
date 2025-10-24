@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace App.Runtime.UI
 {
-    public class Health : MonoBehaviour
+    public class UIHealth : MonoBehaviour
     {
         [SerializeField] private Image healthBarFill;
         

@@ -11,7 +11,7 @@ namespace App.Runtime
         private void Awake()
         {
             _stateMachine = new SimpleStateMachine();
-            _stateMachine.ChangeState(new MainState());
+            _stateMachine.ChangeState(new InitializeState());
         }
         
         private void Update()

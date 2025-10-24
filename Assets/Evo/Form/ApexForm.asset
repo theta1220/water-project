@@ -1,25 +1,3 @@
-%YAML 1.1
---- !u!114 &11400000
-MonoBehaviour:
-  m_Script: {fileID: 11500000, guid: 1aae764535a246fba70e0edd5000dea8, type: 3}
-  m_Name: ApexForm
-  morphId: apex
-  displayName: Apex Form
-  description: "生態系の頂点に立つ捕食者。光を放ち、触れたものすべてを吸収する。"
-  minTotalNutrition: 60
-  minSize: 1.8
-  minSpeed: 0
-  minSense: 0
-  minEmission: 0.3
-  maxViscosity: 999
-  requiredParentMorphId: ravager
-  addSize: 0
-  addEmission: 0.3
-  addHueShift: 0.1
-  bodyScaleMul: 1.4
-  overrideMaterial: {fileID: 0}
-  suctionMul: 2.0
-  accelMul: 1.3
-  biteDistanceAdd: 0.25
-  maxAttachmentsAdd: 0
-  nextMorphs: []
+version https://git-lfs.github.com/spec/v1
+oid sha256:30f3142799044c17290cb220a2c97076c7c821094e80cb9441d955a4675b7cbc
+size 665

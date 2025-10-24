@@ -4,6 +4,7 @@
     {
         public abstract class State
         {
+            public SimpleStateMachine Parent { get; set; }
             public virtual void OnEnter() { }
             public virtual void OnExit() { }
             public virtual void OnUpdate() { }
@@ -15,6 +16,7 @@
         {
             _currentState?.OnExit();
             _currentState = newState;
+            newState.Parent = this;
             _currentState?.OnEnter();
         }
 

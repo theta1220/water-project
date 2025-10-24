@@ -1,25 +1,3 @@
-%YAML 1.1
---- !u!114 &11400000
-MonoBehaviour:
-  m_Script: {fileID: 11500000, guid: 1aae764535a246fba70e0edd5000dea8, type: 3}
-  m_Name: BulwarkForm
-  morphId: bulwark
-  displayName: Bulwark Form
-  description: "厚い外殻を持つ堅牢な形態。鈍重だが多数の個体を同時に捕食できる。"
-  minTotalNutrition: 18
-  minSize: 1.4
-  minSpeed: 0
-  minSense: 0
-  minEmission: 0
-  maxViscosity: 2.0
-  requiredParentMorphId: base
-  addSize: 0.3
-  addEmission: 0.05
-  addHueShift: 0
-  bodyScaleMul: 1.25
-  overrideMaterial: {fileID: 0}
-  suctionMul: 1.0
-  accelMul: 0.8
-  biteDistanceAdd: 0
-  maxAttachmentsAdd: 3
-  nextMorphs: []
+version https://git-lfs.github.com/spec/v1
+oid sha256:5525edbe4dec6d126c740f12d7788211bec6b1fac9b10506c3531328e5eb9a41
+size 668

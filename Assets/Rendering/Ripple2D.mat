@@ -47,7 +47,7 @@ Material:
     - _Sharpness: 6.19
     - _Speed: 96
     - _WavelengthPixels: 71
-    - _YFlip: 0
+    - _YFlip: 1
     - _ZWrite: 0
     m_Colors:
     - _Center: {r: 0.5, g: 0.5, b: 0, a: 0}

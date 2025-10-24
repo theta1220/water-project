@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using App.Runtime.Framework;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace App.Runtime.Player
 {
@@ -91,6 +92,9 @@ namespace App.Runtime.Player
         public float alignmentWeight = 1.0f;
         public float cohesionWeight = 1.0f;
         public float flockingRange = 5f;
+
+        public readonly UnityEvent OnProgress = new();
+        
         // === 内部 ===
         private Rigidbody2D rb;
         public Rigidbody2D Rb => rb;
@@ -104,6 +108,16 @@ namespace App.Runtime.Player
         private Collider2D currentTarget;
         private ContactFilter2D filter;
         private readonly List<Collider2D> _hits = new(32);
+        private Vector2 playerMoveDir;
+
+        private enum BoostMode
+        {
+            None,
+            PreBoost,
+            Boost
+        }
+        
+        private BoostMode _currentBoostMode = BoostMode.None;
 
         // 捕獲状態管理
         private class Carry
@@ -156,6 +170,21 @@ namespace App.Runtime.Player
             if (body) body.ApplyGenome(genome);
         }
 
+        public void Control()
+        {
+            if (Input.GetButton("Jump"))
+            {
+                _currentBoostMode = BoostMode.PreBoost;
+            }
+            else if (Input.GetButtonUp("Jump"))
+            {
+                _currentBoostMode = BoostMode.Boost;
+            }
+            
+            
+            playerMoveDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+
         private const float ROTATION_SMOOTH_SPEED = 10f;
 
         private void FixedUpdate()
@@ -169,12 +198,11 @@ namespace App.Runtime.Player
             // UpdateRotation();
 
             // --- ゲノム減衰 --- 
-            bool isBoosting = !aiControlled && Input.GetButton("Jump"); // プレイヤー操作時のみJumpキーをチェック
-            var currentDecayFactor = isBoosting ? decayFactor * boostDecayMultiplier : decayFactor;
+            var currentDecayFactor = decayFactor;
             genome.Decay(currentDecayFactor);
 
             // 移動による体力減少
-            var damage = rb.linearVelocity.magnitude * healthDecayRate * Time.fixedDeltaTime;
+            var damage = healthDecayRate * Time.fixedDeltaTime;
             TakeDamage(damage);
 
             wobblePhase += rb.linearVelocity.magnitude * headWobbleFrequency * Time.fixedDeltaTime;
@@ -206,23 +234,21 @@ namespace App.Runtime.Player
         // ===================== AI / Movement =====================
         private void HandlePlayerInputFixed()
         {
-            var h = Input.GetAxisRaw("Horizontal");
-            var v = Input.GetAxisRaw("Vertical");
-
-            var boost = 1f;
+            var boost = 0f;
             var forceMode = ForceMode2D.Force;
-            if (Input.GetButton("Jump"))
+            if (_currentBoostMode == BoostMode.PreBoost)
             {
                 boost = preBoostMultiplier;
             }
 
-            if (Input.GetButtonUp("Jump"))
+            if (_currentBoostMode == BoostMode.Boost)
             {
+                _currentBoostMode = BoostMode.None;
                 boost = boostMultiplier;
                 forceMode = ForceMode2D.Impulse;
             }
             
-            ApplyDrive(new Vector2(h, v).normalized, boost, forceMode);
+            ApplyDrive(playerMoveDir, boost, forceMode);
         }
 
         private void UpdateAI()
@@ -273,9 +299,9 @@ namespace App.Runtime.Player
             aiMoveDir = Random.insideUnitCircle.normalized;
         }
 
-        private void ApplyDrive(Vector2 dir, float thrustMul, ForceMode2D forceMode)
+        private void ApplyDrive(Vector2 dir, float boost, ForceMode2D forceMode)
         {
-            if (dir.magnitude == 0)
+            if (dir.magnitude == 0 && Mathf.Approximately(boost, 0f))
             {
                 return;
             }
@@ -288,7 +314,7 @@ namespace App.Runtime.Player
             var wobbleDir = dir + perpendicular * wobble;
 
             // var force = accel * genome.speed * thrustMul;
-            var force = accel * thrustMul;
+            var force = accel + boost;
             rb.AddForce(transform.up * force, forceMode);
             
             var targetRotation = Quaternion.LookRotation(Vector3.forward, wobbleDir);
@@ -349,22 +375,13 @@ namespace App.Runtime.Player
             if (captureMode == CaptureMode.InstantEat)
             {
                 prey.OnEaten();
+                OnProgress.Invoke();
                 var preyGene = prey.GetGenomeForConsumption();
                 genome.Absorb(preyGene, preyWeight, mutationStrength);
                 var nutrition = prey.GetNutritionValue();
                 genome.size = Mathf.Clamp(genome.size + nutrition * digestNutritionScale, 0.2f, 3);
                 genome.emission = Mathf.Clamp01(genome.emission + nutrition * digestEmissionScale);
-                rb.linearVelocity = Vector2.zero;
-                
-                if (_externalTarget != null)
-                {
-                    var vecToPrey = (prey.transform.position - transform.position).normalized;
-                    rb.AddForce(vecToPrey * eatImpulse, ForceMode2D.Impulse);
-                }
-                else
-                {
-                    rb.AddForce(transform.up * eatImpulse, ForceMode2D.Impulse);
-                }
+                rb.AddForce(transform.up * eatImpulse, ForceMode2D.Impulse);
                 currentHealth = Mathf.Min(maxHealth, currentHealth + healthRecoverOnEat);
                 ApplyPhenotype();
                 morphCtl?.NotifyAbsorb(nutrition, preyGene);
@@ -481,8 +498,8 @@ namespace App.Runtime.Player
             if (body) body.ApplyGenome(genome);
             if (!selfCol) selfCol = GetComponent<CircleCollider2D>();
             selfCol.radius = 0.25f * genome.size;
-            rb.mass = Mathf.Clamp(genome.size, 0.3f, 8f);
-            rb.linearDamping = Mathf.Lerp(0.3f, 2f, Mathf.InverseLerp(0.5f, 3f, genome.viscosity));
+            // rb.mass = Mathf.Clamp(genome.size, 0.3f, 8f);
+            // rb.linearDamping = Mathf.Lerp(0.3f, 2f, Mathf.InverseLerp(0.5f, 3f, genome.viscosity));
         }
 
         private void SetupMouthSensor()
