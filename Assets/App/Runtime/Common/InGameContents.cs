@@ -1,4 +1,5 @@
-﻿using App.Runtime.Master;
+﻿using App.Runtime.Framework;
+using App.Runtime.Master;
 using App.Runtime.Player;
 using App.Runtime.UI;
 using Unity.Cinemachine;
@@ -27,6 +28,7 @@ namespace App.Runtime.Common
         [SerializeField] private UIHealth health;
         [SerializeField] private UIGameProgress gameProgress;
         [SerializeField] private CinemachineCamera cam;
+        [SerializeField] private CinemachineDynamicFOV dynamicFOV;
         
         private PredatorAgent myPredator;
         
@@ -34,6 +36,7 @@ namespace App.Runtime.Common
         public PredatorAgent MyPredator => myPredator;
         public UIGameProgress GameProgress => gameProgress;
         public UIHealth Health => health;
+        public CinemachineDynamicFOV DynamicFOV => dynamicFOV;
         
         public void Initialize()
         {
@@ -42,6 +45,7 @@ namespace App.Runtime.Common
             
             health.SetHealth(1);
             gameProgress.SetProgress(0, masterContainer.GameMaster.MaxProgress);
+            dynamicFOV.SetTargetFOV(0);
         }
     }
 }

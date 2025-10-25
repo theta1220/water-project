@@ -10034,7 +10034,6 @@ GameObject:
   - component: {fileID: 142846360}
   - component: {fileID: 142846359}
   - component: {fileID: 142846361}
-  - component: {fileID: 142846362}
   m_Layer: 5
   m_Name: Health
   m_TagString: Untagged
@@ -10112,20 +10111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarFill: {fileID: 142846359}
---- !u!114 &142846362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 142846357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61712161353947e5ad04bedaba98830f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  rotationAxis: {x: 0, y: 0, z: 1}
 --- !u!1 &166863348
 GameObject:
   m_ObjectHideFlags: 0
@@ -20330,6 +20315,7 @@ MonoBehaviour:
   health: {fileID: 142846361}
   gameProgress: {fileID: 1717194649}
   cam: {fileID: 1297254642}
+  dynamicFOV: {fileID: 1297254644}
 --- !u!4 &456600829
 Transform:
   m_ObjectHideFlags: 0
@@ -45654,11 +45640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b51e295630450fb12ad4de20985807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  minFOV: 10
-  maxFOV: 20
-  speedThreshold: 1
-  smoothTime: 10
+  defaultFOV: 10
+  smoothTime: 1
 --- !u!1 &1356170288
 GameObject:
   m_ObjectHideFlags: 0
@@ -66336,7 +66319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellSize: 50
-  globalSenseCap: 300
+  globalSenseCap: 10
   initialGridCapacity: 1024
 --- !u!114 &2132376147
 MonoBehaviour:

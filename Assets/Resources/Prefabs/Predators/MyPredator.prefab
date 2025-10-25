@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: aiControlled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2050330583369461379, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
+      propertyPath: _aiControlled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4284070663067928376, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -56,7 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MyPredator
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5393306118456978064, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
+    - {fileID: -1020587225758054230, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
+    - {fileID: 4532983145590538327, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

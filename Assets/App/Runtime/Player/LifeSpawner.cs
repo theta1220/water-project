@@ -94,14 +94,7 @@ namespace App.Runtime.Player
             var pos = RandomPosition();
             var go = Instantiate(preyPrefab, pos, Quaternion.identity);
             preyCount++;
-
-            var prey = go.GetComponent<PreyAgent>();
-            if (prey)
-            {
-                InitializeGenome(prey.genome, preySpeedRange, preyViscosityRange, preySizeRange, preyHueRange, preyEmissionRange);
-                prey.nutrition = Random.Range(0.5f, 2.0f);
-            }
-
+            
             go.AddComponent<PopulationTracker>().Init(this, false);
         }
 
@@ -116,23 +109,7 @@ namespace App.Runtime.Player
             var go = Instantiate(predatorPrefab, pos, Quaternion.identity);
             predatorCount++;
 
-            var pred = go.GetComponent<PredatorAgent>();
-            if (pred)
-            {
-                InitializeGenome(pred.genome, predSpeedRange, predViscosityRange, predSizeRange, predHueRange, predEmissionRange);
-                if (pred.preyMask == 0) pred.preyMask = LayerMask.GetMask("Prey");
-            }
-
             go.AddComponent<PopulationTracker>().Init(this, true);
-        }
-
-        private void InitializeGenome(Genome genome, Vector2 speedRange, Vector2 viscosityRange, Vector2 sizeRange, Vector2 hueRange, Vector2 emissionRange)
-        {
-            genome.speed = Random.Range(speedRange.x, speedRange.y);
-            genome.viscosity = Random.Range(viscosityRange.x, viscosityRange.y);
-            genome.size = Random.Range(sizeRange.x, sizeRange.y);
-            genome.hue = Random.Range(hueRange.x, hueRange.y);
-            genome.emission = Random.Range(emissionRange.x, emissionRange.y);
         }
 
         private Vector2 RandomPosition()

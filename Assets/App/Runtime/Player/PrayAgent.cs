@@ -7,21 +7,11 @@ namespace App.Runtime.Player
     [RequireComponent(typeof(Collider2D))]
     public class PreyAgent : MonoBehaviour
     {
-        [Header("Genome")] public Genome genome = new Genome();
-
-        [Header("Energy / Nutrition")] [Tooltip("捕食時にプレデターへ渡る栄養量（体格や発光に転用可）")]
-        public float nutrition = 1.0f;
-
-        [Header("Wander AI")] [Tooltip("徘徊方向へ与える力（環境粘度が高いほど実効が下がる）")]
-        public float wanderForce = 5f;
-
         [Tooltip("方向更新の平均間隔（秒）")] public float wanderInterval = 1.2f;
         [Tooltip("最大速度（クランプ）")] public float maxSpeed = 2.0f;
         [Tooltip("境界に近づいたときの軽い戻し（使わないなら0）")] public float boundsSoftPush = 0f;
         public Vector2 boundsCenter = Vector2.zero;
         public Vector2 boundsSize = new(30, 30);
-
-        [Header("Visual")] public MetaballBody body;
 
         [Header("Debug")] public bool debugLogs = false;
 
@@ -44,24 +34,17 @@ namespace App.Runtime.Player
 
             col.isTrigger = false;
             col.enabled = true;
-
-            if (!body) body = GetComponentInChildren<MetaballBody>();
-        }
-
-        private void Start()
-        {
-            ApplyPhenotype();
         }
 
         private void OnEnable()
         {
             // グリッドJobマネージャに登録（存在すれば）
-            if (EcosystemGridJobManager.Instance) EcosystemGridJobManager.Instance.Register(this);
+            if (EcoSystem.Instance) EcoSystem.Instance.Register(this);
         }
 
         private void OnDisable()
         {
-            if (EcosystemGridJobManager.Instance) EcosystemGridJobManager.Instance.Unregister(this);
+            if (EcoSystem.Instance) EcoSystem.Instance.Unregister(this);
         }
 
         private const float WANDER_INTERVAL_MIN_FACTOR = 0.6f;
@@ -74,7 +57,6 @@ namespace App.Runtime.Player
             UpdateWander();
             ClampVelocity();
             ApplyBoundsPush();
-            UpdateVisuals();
         }
 
         private void UpdateWander()
@@ -84,9 +66,7 @@ namespace App.Runtime.Player
             {
                 timer = wanderInterval * Random.Range(WANDER_INTERVAL_MIN_FACTOR, WANDER_INTERVAL_MAX_FACTOR);
                 var dir = Random.insideUnitCircle.normalized;
-                var visc = Mathf.Max(MIN_VISCOSITY, genome.viscosity);
-                var force = wanderForce * genome.speed / visc;
-                rb.AddForce(dir * force, ForceMode2D.Force);
+                rb.AddForce(dir, ForceMode2D.Force);
             }
         }
 
@@ -111,15 +91,9 @@ namespace App.Runtime.Player
                 if (p.y > max.y) push.y -= 1f;
                 if (push != Vector2.zero)
                 {
-                    var visc = Mathf.Max(MIN_VISCOSITY, genome.viscosity);
-                    rb.AddForce(push.normalized * (boundsSoftPush / visc), ForceMode2D.Force);
+                    rb.AddForce(push.normalized * boundsSoftPush, ForceMode2D.Force);
                 }
             }
-        }
-
-        private void UpdateVisuals()
-        {
-            if (body) body.ApplyGenome(genome);
         }
 
         // ==== 捕食フック ====
@@ -159,29 +133,6 @@ namespace App.Runtime.Player
         {
             if (debugLogs) Debug.Log($"[Prey] Eaten: {name}");
             Destroy(gameObject);
-        }
-
-        // ==== PredatorAgent から参照されるAPI ====
-        /// <summary>
-        /// 捕食される際に、ゲノムのクローンを提供します。
-        /// </summary>
-        /// <returns>ゲノムのクローン。</returns>
-        public Genome GetGenomeForConsumption() => genome.Clone();
-        /// <summary>
-        /// 栄養価を返します。
-        /// </summary>
-        /// <returns>栄養価。</returns>
-        public float GetNutritionValue() => nutrition;
-
-        // ==== 見た目・物理反映 ====
-        private void ApplyPhenotype()
-        {
-            if (body) body.ApplyGenome(genome);
-
-            // 体格に応じて当たり/質量調整（軽め）
-            rb.mass = Mathf.Clamp(0.5f * genome.size, 0.1f, 5f);
-            rb.linearDamping = Mathf.Lerp(0.3f, 2f, Mathf.InverseLerp(0.5f, 3f, genome.viscosity));
-            rb.angularDamping = Mathf.Lerp(0.02f, 0.3f, Mathf.InverseLerp(0.5f, 3f, genome.viscosity));
         }
 
 #if UNITY_EDITOR

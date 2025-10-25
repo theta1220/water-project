@@ -11,6 +11,8 @@
         }
         
         private State _currentState;
+
+        public State CurrentState => _currentState;
         
         public void ChangeState(State newState)
         {

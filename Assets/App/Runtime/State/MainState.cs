@@ -1,12 +1,13 @@
 ﻿using App.Runtime.Common;
 using App.Runtime.Framework;
+using UnityEngine;
 
 namespace App.Runtime.State
 {
     public class MainState : SimpleStateMachine.State
     {
         private int _progress = 0;
-
+        
         public override void OnEnter()
         {
             var myPredator = InGameContents.Instance.MyPredator;
@@ -35,7 +36,18 @@ namespace App.Runtime.State
             var gameMaster = InGameContents.Instance.MasterContainer.GameMaster;
             gameProgressUI.SetProgress(_progress, gameMaster.MaxProgress);
             
-            myPredator.Control();
+            var isBoost = Input.GetButtonDown("Jump");
+            var dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            var boost = 1.0f;
+            var forceMode = ForceMode2D.Force;
+            
+            if (isBoost)
+            {
+                boost = myPredator.Param.boostMultiplier;
+                forceMode = ForceMode2D.Impulse;
+            }
+            
+            myPredator.ApplyDrive(dir, boost, forceMode);
         }
 
         private void OnProgress()
