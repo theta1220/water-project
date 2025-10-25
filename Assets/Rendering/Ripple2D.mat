@@ -41,7 +41,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AmpPixels: 1.8
+    - _AmpPixels: 0.7
     - _Attenuation: 0
     - _EnableExternalAlpha: 0
     - _Sharpness: 6.19

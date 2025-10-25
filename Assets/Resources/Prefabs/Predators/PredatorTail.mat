@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pray
+  m_Name: PredatorTail
   m_Shader: {fileID: 4800000, guid: 367c0cc322794eabbc9a6c3eddabfe63, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -28,11 +28,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e7c72d0bc8474944a8e8156da116fded, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
-        m_Texture: {fileID: 2800000, guid: e7c72d0bc8474944a8e8156da116fded, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -42,7 +42,7 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
-    - _EmissionStrength: 10
+    - _EmissionStrength: 3.91
     - _EnableExternalAlpha: 0
     - _ZWrite: 0
     m_Colors:

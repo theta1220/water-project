@@ -19,6 +19,7 @@ namespace App.Runtime.Player
         public int preyToPredatorRatio = 5; // Predator1匹に対して必要なPreyの数
 
         [Header("Spawn area")] public Vector2 areaSize = new(30f, 30f);
+        public Vector2 ignoreAreaSize = new(0f, 0f);
         public bool useLocalSpace = false;
 
         [Header("Genome randomness (Prey)")] public Vector2 preySpeedRange = new(0.5f, 2.0f);
@@ -138,6 +139,12 @@ namespace App.Runtime.Player
         {
             Vector2 offset = new(Random.Range(-areaSize.x * 0.5f, areaSize.x * 0.5f),
                 Random.Range(-areaSize.y * 0.5f, areaSize.y * 0.5f));
+            while (Mathf.Abs(offset.x) < ignoreAreaSize.x * 0.5f &&
+                   Mathf.Abs(offset.y) < ignoreAreaSize.y * 0.5f)
+            {
+                offset = new Vector2(Random.Range(-areaSize.x * 0.5f, areaSize.x * 0.5f),
+                    Random.Range(-areaSize.y * 0.5f, areaSize.y * 0.5f));
+            }
             return useLocalSpace
                 ? (Vector2)transform.TransformPoint(offset)
                 : (Vector2)transform.position + offset;
@@ -159,6 +166,8 @@ namespace App.Runtime.Player
             Gizmos.color = new Color(0f, 0.8f, 1f, 0.2f);
             Gizmos.matrix = useLocalSpace ? transform.localToWorldMatrix : Matrix4x4.identity;
             Gizmos.DrawWireCube(transform.position, new Vector3(areaSize.x, areaSize.y, 0));
+            Gizmos.DrawWireCube(transform.position, new Vector3(ignoreAreaSize.x, ignoreAreaSize.y, 0));
+            
         }
 #endif
     }

@@ -22,6 +22,8 @@ namespace App.Runtime.Player
         public float eatImpulse = 5f; // 捕食時のインパルス
         public float bitePadding = 0.05f;
         public float suctionForce = 6f;
+        public Prey weakPoint;
+        public float weakPointHuntTime = 0.5f;
 
         [Header("Health")] public float maxHealth = 100f;
         [SerializeField] private float currentHealth;
@@ -51,6 +53,9 @@ namespace App.Runtime.Player
         public Vector2 boundsCenter = Vector2.zero;
         public Vector2 boundsSize = new(30, 30);
         public float boundsMargin = 1.0f;
+
+        [Header("Animation")] public Animator animator;
+        public string isDeadParam = "isDead";
 
         public enum CaptureMode
         {
@@ -103,6 +108,7 @@ namespace App.Runtime.Player
 
         private float eatTimer;
         private Vector2 aiMoveDir;
+        private Vector2 wanderTargetDir;
         private float wanderTimer;
         private float targetTimer;
         private Collider2D currentTarget;
@@ -207,6 +213,8 @@ namespace App.Runtime.Player
 
             wobblePhase += rb.linearVelocity.magnitude * headWobbleFrequency * Time.fixedDeltaTime;
 
+            animator.SetBool(isDeadParam, !weakPoint | animator.GetBool(isDeadParam));
+
             // if (aiControlled && rb.linearVelocity.magnitude < minSpeed)
             // {
             //     var dir = rb.linearVelocity.normalized;
@@ -285,7 +293,16 @@ namespace App.Runtime.Player
             {
                 wanderTimer -= Time.fixedDeltaTime;
                 if (wanderTimer <= 0) ResetWander();
-                aiMoveDir = (aiMoveDir + Random.insideUnitCircle * wanderJitter).normalized;
+                var blend = 1f - Mathf.Exp(-wanderStrength * Time.fixedDeltaTime);
+                if (blend > 0f)
+                {
+                    aiMoveDir = Vector2.Lerp(aiMoveDir, wanderTargetDir, blend);
+                }
+
+                if (aiMoveDir.sqrMagnitude < 0.0001f)
+                    aiMoveDir = wanderTargetDir;
+
+                aiMoveDir = aiMoveDir.normalized;
                 dir = aiMoveDir + flockingVector;
             }
 
@@ -296,7 +313,18 @@ namespace App.Runtime.Player
         private void ResetWander()
         {
             wanderTimer = wanderInterval * Random.Range(0.7f, 1.3f);
-            aiMoveDir = Random.insideUnitCircle.normalized;
+            var baseDir = wanderTargetDir.sqrMagnitude > 0.0001f ? wanderTargetDir : (aiMoveDir.sqrMagnitude > 0.0001f ? aiMoveDir : Random.insideUnitCircle);
+            if (baseDir == Vector2.zero)
+                baseDir = Vector2.up;
+            baseDir = baseDir.normalized;
+
+            var jitterAngle = wanderJitter * 90f; // wanderJitter=1 => ±90°
+            var angle = Random.Range(-jitterAngle, jitterAngle);
+            var rot = Quaternion.AngleAxis(angle, Vector3.forward);
+            wanderTargetDir = ((Vector2)(rot * baseDir)).normalized;
+
+            if (aiMoveDir == Vector2.zero)
+                aiMoveDir = wanderTargetDir;
         }
 
         private void ApplyDrive(Vector2 dir, float boost, ForceMode2D forceMode)
@@ -315,8 +343,11 @@ namespace App.Runtime.Player
 
             // var force = accel * genome.speed * thrustMul;
             var force = accel + boost;
-            rb.AddForce(transform.up * force, forceMode);
+            var forward = dir;
+            rb.AddForce(forward * force, forceMode);
             
+            if (wobbleDir.sqrMagnitude < 0.0001f)
+                wobbleDir = dir;
             var targetRotation = Quaternion.LookRotation(Vector3.forward, wobbleDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
         }
@@ -331,6 +362,11 @@ namespace App.Runtime.Player
         // ===================== Hunting =====================
         private void UpdateHunting()
         {
+            if (!weakPoint)
+            {
+                return;
+            }
+            
             var myR = GetApproxRadius(selfCol);
             var biteR = genome.biteDistance + myR + bitePadding;
 
@@ -355,6 +391,8 @@ namespace App.Runtime.Player
             foreach (var h in _hits)
             {
                 if (!h) continue;
+                if (h.gameObject == weakPoint.gameObject) continue;
+                
                 var d = ((Vector2)h.transform.position - pos).sqrMagnitude;
                 if (d < best)
                 {
@@ -367,6 +405,30 @@ namespace App.Runtime.Player
             {
                 Bite(prey);
                 eatTimer = eatCooldown;
+            }
+            else if (nearest && nearest.TryGetComponent(out Prey pray))
+            {
+                Bite(pray);
+                eatTimer = eatCooldown;
+            }
+            else
+            {
+                transform.parent = null;
+            }
+        }
+
+        private void Bite(Prey prey)
+        {
+            transform.parent = prey.transform;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            prey.OnEaten(this);
+
+            if (prey.IsDead())
+            {
+                OnProgress.Invoke();
+                currentHealth = Mathf.Min(maxHealth, currentHealth + healthRecoverOnEat);
+                Instantiate(eatParticlePrefab, prey.gameObject.transform.position, Quaternion.identity);
+                rb.bodyType = RigidbodyType2D.Dynamic;
             }
         }
 
@@ -405,6 +467,16 @@ namespace App.Runtime.Player
                 absorbed01 = 0,
                 localSlot = slot
             });
+        }
+
+        private void ToDie()
+        {
+            animator.SetBool(isDeadParam, true);
+        }
+
+        public void Die()
+        {
+            Destroy(gameObject);
         }
 
         private void UpdateCarryAndDigest()
@@ -540,7 +612,7 @@ namespace App.Runtime.Player
                 // 死亡処理
                 if (LifeSpawner.Instance != null) LifeSpawner.Instance.NotifyDeath(true); // Predatorなのでtrue
                 else Debug.LogWarning("LifeSpawner.Instance is null. Cannot notify death.");
-                Destroy(gameObject);
+                ToDie();
             }
         }
 

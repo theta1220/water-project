@@ -52,7 +52,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0.023733204, g: 0.06277209, b: 0.1006288, a: 0.4}
+    - _ShadowColor: {r: 0.13631995, g: 0.08593402, b: 0.34591186, a: 0.45490196}
     - _ShadowOffset: {r: -0.001, g: 0.01, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

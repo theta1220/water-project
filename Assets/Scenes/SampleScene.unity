@@ -403,8 +403,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -845,7 +845,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -5236,8 +5236,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5678,7 +5678,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -10034,6 +10034,7 @@ GameObject:
   - component: {fileID: 142846360}
   - component: {fileID: 142846359}
   - component: {fileID: 142846361}
+  - component: {fileID: 142846362}
   m_Layer: 5
   m_Name: Health
   m_TagString: Untagged
@@ -10073,7 +10074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 45a148e07e915a849944f7cf5a7a55d2, type: 2}
-  m_Color: {r: 0.8901961, g: 0.9764706, b: 0.13333334, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.007843138}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10111,6 +10112,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarFill: {fileID: 142846359}
+--- !u!114 &142846362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142846357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61712161353947e5ad04bedaba98830f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  rotationAxis: {x: 0, y: 0, z: 1}
 --- !u!1 &166863348
 GameObject:
   m_ObjectHideFlags: 0
@@ -10410,8 +10425,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.4849886, g: 0.7021603, b: 0.76729554, a: 0.023529412}
-      maxColor: {r: 0.16429327, g: 0.6067698, b: 0.735849, a: 0.0627451}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -10852,7 +10867,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -15390,8 +15405,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -15832,7 +15847,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -20629,8 +20644,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.4849886, g: 0.7021603, b: 0.76729554, a: 0.023529412}
-      maxColor: {r: 0.16429327, g: 0.6067698, b: 0.735849, a: 0.0627451}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -21071,7 +21086,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -35508,8 +35523,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -35950,7 +35965,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -40593,8 +40608,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.4849886, g: 0.7021603, b: 0.76729554, a: 0.023529412}
-      maxColor: {r: 0.16429327, g: 0.6067698, b: 0.735849, a: 0.0627451}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -41035,7 +41050,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -45677,12 +45692,13 @@ MonoBehaviour:
   predatorPrefab: {fileID: 7521805159106154122, guid: 500e58a905e92594bab5c4e33ca2ab22, type: 3}
   initialPrey: 0
   initialPredator: 0
-  spawnInterval: 0.1
+  spawnInterval: 0.05
   maxPrey: 20
-  maxPredator: 100
-  predatorSpawnProbability: 0.1
-  preyToPredatorRatio: 5
-  areaSize: {x: 61.4, y: 30}
+  maxPredator: 30
+  predatorSpawnProbability: 0.5
+  preyToPredatorRatio: 1
+  areaSize: {x: 83.4, y: 57.6}
+  ignoreAreaSize: {x: 45.4, y: 28.6}
   useLocalSpace: 1
   preySpeedRange: {x: 1, y: 2}
   preyViscosityRange: {x: 0.5, y: 2.5}
@@ -45993,8 +46009,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -46435,7 +46451,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -50826,8 +50842,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -51268,7 +51284,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -55749,8 +55765,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.4849886, g: 0.7021603, b: 0.76729554, a: 0.023529412}
-      maxColor: {r: 0.16429327, g: 0.6067698, b: 0.735849, a: 0.0627451}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -56191,7 +56207,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -60360,7 +60376,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.09019608, g: 0.26666668, b: 0.2901961, a: 1}
+  m_Color: {r: 0.20754708, g: 0.6502704, b: 0.66666657, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -61140,8 +61156,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 305135581
-  m_fontColor: {r: 0.86717796, g: 1, b: 0.18553454, a: 0.07058824}
+    rgba: 318767103
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.07058824}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -61294,7 +61310,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.09019608, g: 0.26666668, b: 0.2901961, a: 1}
+  m_BackGroundColor: {r: 0.9308176, g: 0.9308176, b: 0.9308176, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -61689,8 +61705,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.08460893, g: 0.38993704, b: 0.3492638, a: 0.20784314}
-      maxColor: {r: 0.3019608, g: 0.59786683, b: 0.7411765, a: 0.105882354}
+      minColor: {r: 0.081800506, g: 0.5368411, b: 0.55345905, a: 0.34509805}
+      maxColor: {r: 0.27520654, g: 0.70189434, b: 0.72327036, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -62131,7 +62147,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}

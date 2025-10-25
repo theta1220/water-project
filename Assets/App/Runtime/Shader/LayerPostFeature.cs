@@ -94,8 +94,12 @@ public class LayerPostFeature : ScriptableRendererFeature
             RenderingUtils.ReAllocateIfNeeded(
                 ref colorRT, desc, FilterMode.Bilinear, TextureWrapMode.Clamp, name: uniqueName);
 
-            // RTHandle版の ConfigureTarget（非Obsolete）
-            ConfigureTarget(colorRT);
+            // カメラの深度 / ステンシルを共有して SpriteMask を反映させる
+            var depthTarget = renderingData.cameraData.renderer.cameraDepthTargetHandle;
+            if (depthTarget?.rt != null)
+                ConfigureTarget(colorRT, depthTarget);
+            else
+                ConfigureTarget(colorRT);
             ConfigureClear(ClearFlag.Color, new Color(0, 0, 0, 0));
         }
 
@@ -124,11 +128,16 @@ public class LayerPostFeature : ScriptableRendererFeature
                 var sortFlags = SortingCriteria.CommonTransparent;
                 var sorting = new SortingSettings(renderingData.cameraData.camera) { criteria = sortFlags };
 
-                var drawing = new DrawingSettings(shaderTags[0], sorting);
+                var drawing = new DrawingSettings(shaderTags[0], sorting)
+                {
+                    perObjectData = PerObjectData.None,
+                };
                 for (int i = 1; i < shaderTags.Count; i++)
                     drawing.SetShaderPassName(i, shaderTags[i]);
 
                 var filter = filtering;
+
+                var stateBlock = this.stateBlock;
                 context.DrawRenderers(renderingData.cullResults, ref drawing, ref filter, ref stateBlock);
             }
 
